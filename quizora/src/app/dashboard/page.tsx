@@ -1,7 +1,9 @@
 export default function Page() {
     return (
-        <div className="flex items-center justify-center">
-            <h1>Dashboard</h1>
+        <div className="flex flex-col items-center justify-center">
+            <main>
+                <h1>Dashboard</h1>
+            </main>
         </div>
     );
 }
