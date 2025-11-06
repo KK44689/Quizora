@@ -1,6 +1,6 @@
 import "@/app/ui/globals.css";
-import SearchBar from "../ui/dashboard/SearchBar";
-import SideNav from "../ui/dashboard/SideNav";
+import SearchBar from "../ui/dashboard/search-bar";
+import SideNav from "../ui/dashboard/sidenav";
 
 export default function RootLayout({
     children,
@@ -8,13 +8,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="flex flex-col gap-8">
-            <div className="flex flex-row gap-8">
-                <SideNav />
-                <SearchBar placeholder={"Search Quiz"} />
-            </div>
-            <div>
-                {children}
+        <div className="flex min-h-screen">
+            <SideNav />
+
+            <div className="flex flex-col flex-1">
+                <header className="my-10 flex items-center px-8 py-4 border-b border-gray-200 bg-white">
+                    <SearchBar placeholder="Search Quiz" />
+                </header>
+
+                <main className="flex-1 p-8">{children}</main>
             </div>
         </div>
     );
