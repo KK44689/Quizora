@@ -25,7 +25,7 @@ export default function RootLayout({
                     <Avatar profile={mockProfile} />
                 </header>
 
-                <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit">{children}</main>
+                <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
             </div>
         </div>
     );
