@@ -12,7 +12,7 @@ export default function RootLayout({
             <SideNav />
 
             <div className="flex flex-col flex-1">
-                <header className="my-10 flex items-center px-8 py-4 border-b border-gray-200 bg-white">
+                <header className="my-10 flex items-center px-8 py-4 bg-white">
                     <SearchBar placeholder="Search Quiz" />
                 </header>
 
