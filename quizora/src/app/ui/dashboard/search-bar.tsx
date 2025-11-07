@@ -4,7 +4,7 @@ import { poppins } from '../font';
 
 export default function SearchBar({ placeholder }: { placeholder: string }) {
     return (
-        <div className='relative flex flex-1 flex-shrink-0 items-center justify-center mr-8'>
+        <div className='relative flex flex-1 flex-shrink-0 items-center justify-center'>
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--theme-blue)]" />
             <label htmlFor="search" className="sr-only">
                 Search
