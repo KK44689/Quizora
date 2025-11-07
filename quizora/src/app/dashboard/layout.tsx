@@ -10,9 +10,8 @@ export default function RootLayout({
     return (
         <div className="flex min-h-screen">
             <SideNav />
-
             <div className="flex flex-col flex-1">
-                <header className="my-10 flex items-center px-8 py-4 bg-white">
+                <header className="flex md:h-[89px] sm:h-[64px] items-center px-8 py-4 bg-white">
                     <SearchBar placeholder="Search Quiz" />
                 </header>
 

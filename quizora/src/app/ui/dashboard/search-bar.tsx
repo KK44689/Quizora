@@ -1,5 +1,6 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { poppins } from '../font';
 
 export default function SearchBar({ placeholder }: { placeholder: string }) {
     return (
@@ -10,7 +11,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
             </label>
             <input
                 id="default-search"
-                className="w-full pl-10 pr-4 py-2 rounded-lg shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`${poppins.className} text-sm w-full pl-10 pr-4 py-2 rounded-lg shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder={placeholder}
                 required
             />
