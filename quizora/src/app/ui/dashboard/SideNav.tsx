@@ -6,14 +6,14 @@ import { poppins } from "../font";
 
 export default function SideNav() {
     return (
-        <div className='flex flex-col h-screen w-16 p-4 md:p-8 gap-16 md:w-64'>
+        <div className='flex flex-col h-screen w-16 p-2 pt-4 md:p-8 gap-16 md:w-64'>
             <Link href={"/"} className="flex items-center justify-center">
                 <Image
                     src="/quizora-blue.png"
                     alt="quizola logo"
                     width={435}
                     height={89}
-                    className="w-3/4 h-auto"
+                    className="w-48 md:w-32 h-auto"
                 />
             </Link>
             <div className="flex flex-col grow items-center md:items-stretch justify-between md:space-x-0 md:space-y-2">
