@@ -5,5 +5,5 @@ export const nunito_sans = Nunito_Sans({
 });
 
 export const poppins = Poppins({
-    weight: ['400', '600']
+    weight: ['400', '600', '700']
 });

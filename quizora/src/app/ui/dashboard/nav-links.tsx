@@ -25,14 +25,14 @@ export default function NavLinks() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={clsx(`${poppins.className} font-bold flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm text-[var(--theme-grey)] font-medium md:flex-none md:justify-start md:p-2 md:px-3`,
+                                className={clsx(`${poppins.className} font-bold flex w-[48px] h-[48px] md:w-full grow items-center justify-center gap-2 rounded-md p-1 md:p-3 text-sm text-[var(--theme-grey)] font-medium md:flex-none md:justify-start`,
                                     {
                                         'bg-[var(--theme-blue)] text-white': pathname === link.href,
                                         'bg-grey-500 text-[var(--theme-grey)] hover:bg-sky-100 hover:text-blue-600': pathname !== link.href,
                                     }
                                 )}
                             >
-                                <LinkIcon className={clsx("w-6 md:h-6 text-[var(--theme-blue)]",
+                                <LinkIcon className={clsx("w-8 h-8 md:h-6 text-[var(--theme-blue)]",
                                     {
                                         'text-white': pathname === link.href,
                                     }
