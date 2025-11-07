@@ -4,3 +4,9 @@ export interface ProfileInfo {
     quizPassed: number,
     correctAnswers: number
 }
+
+export interface QuizInfo {
+    imageSource: string,
+    description: string,
+    status: boolean
+}

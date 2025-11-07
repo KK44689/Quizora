@@ -6,7 +6,7 @@ import { poppins } from "../font";
 
 export default function SideNav() {
     return (
-        <div className='flex flex-col h-screen w-16 p-2 pt-4 md:p-8 gap-16 md:w-64'>
+        <div className='flex flex-col h-screen w-16 p-2 pt-6 md:p-8 gap-16 md:w-64'>
             <Link href={"/"} className="flex items-center justify-center">
                 <Image
                     src="/quizora-blue.png"
