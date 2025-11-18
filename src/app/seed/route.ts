@@ -12,6 +12,7 @@ const client = new MongoClient(`${process.env.MONGODB_URI}`, options);
 const filename = path.join(__dirname, `${process.env.QUIZ_DATA}`);
 
 const quizData = JSON.parse(fs.readFileSync(`${process.env.QUIZ_DATA}`, 'utf8')).docs
+const usersData = JSON.parse(fs.readFileSync(`${process.env.USER_DATA}`, 'utf8')).docs
 // Attach the client to ensure proper cleanup on function suspension
 attachDatabasePool(client);
 
@@ -31,8 +32,25 @@ async function seedQuiz() {
     }
   } catch (e) {
     console.error(e);
-  } finally {
-    await client.close();
+  }
+}
+
+async function seedUsers() {
+  try {
+    await client.connect();
+    const db = client.db(process.env.DB_NAME);
+    const collection = db.collection(`${process.env.USER_COLLECTION_NAME}`);
+    const cursor = await collection.find({})
+    const documents = await cursor.toArray()
+
+    if (documents.length === 0) {
+      await collection.insertMany(usersData);
+      console.log(`Inserted User Items: ${collection.countDocuments()}`);
+    } else {
+      console.log(`User Items already existed.`);
+    }
+  } catch (e) {
+    console.error(e);
   }
 }
 
@@ -41,7 +59,8 @@ export async function GET() {
   try {
     const result = await Promise.all(
       [
-        seedQuiz()
+        seedQuiz(),
+        seedUsers()
       ]
     );
     return Response.json({ message: "Databases seeded successfully." });
