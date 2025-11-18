@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../lib/db"
-import { Quiz } from "../lib/definition";
+import { connectToDatabase } from "../../lib/db"
+import { Quiz } from "../../lib/definition";
 
 export async function fetchQuizes(): Promise<Quiz[] | undefined> {
   try {

@@ -3,7 +3,7 @@ import { ProfileInfo } from "@/app/lib/definition";
 import FlagIcon from "@/app/assets/icons/ant-design_flag-filled.svg";
 import CorrectIcon from "@/app/assets/icons/akar-icons_circle-check-fill.svg";
 import { poppins } from "../font";
-import { fetchUserById } from "@/app/api/users";
+import { fetchUserById } from "../../api/users/route";
 
 export default async function Profile() {
   //mock user id: wait for authentication
