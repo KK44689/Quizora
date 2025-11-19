@@ -25,10 +25,10 @@ export default function Home() {
       <div className="flex flex-col h-1/2  w-full items-center justify-center gap-8 bg-white md:h-full md:w-1/2">
         <p className={`${nunito_sans} text-base text-[var(--theme-blue)] text-center md:text-3xl md:leading-normal`}>
           <b>Used this info to try it yourself!</b><br /><br />
-          <b>Email:</b> test@quizora.com<br />
-          <b>Password:</b> thisisapassword<br />
+          <b>Email:</b> lunaDuck@gmail.com<br />
+          <b>Password:</b> lunaDuck123456<br />
         </p>
-        <Link href="/dashboard">  {/*TODO: Now it's bypass to dashboard, changed to login when ready*/}
+        <Link href="/login">
           <button className="text-white bg-[var(--theme-blue)] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Login</button>
         </Link>
       </div>

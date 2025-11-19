@@ -5,28 +5,30 @@ import Avatar from "../ui/dashboard/avatar";
 import { ProfileInfo } from "../lib/definition";
 
 const mockProfile: ProfileInfo = {
-    name: "Luna Duck",
-    imageSource: "/profile-pic.png",
-    quizPassed: 0,
-    correctAnswers: 0
+  firstName: "Luna Duck",
+  image: "/profile-pic.png",
+  quizPassed: 0,
+  correctAnswers: 0,
+  lastName: "",
+  quizHistory: []
 }
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <div className="flex min-h-screen">
-            <SideNav />
-            <div className="flex flex-col flex-1">
-                <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
-                    <SearchBar placeholder="Search Quiz" />
-                    <Avatar profile={mockProfile} />
-                </header>
+  return (
+    <div className="flex min-h-screen">
+      <SideNav />
+      <div className="flex flex-col flex-1">
+        <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
+          <SearchBar placeholder="Search Quiz" />
+          <Avatar profile={mockProfile} />
+        </header>
 
-                <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
-            </div>
-        </div>
-    );
+        <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
+      </div>
+    </div>
+  );
 }
