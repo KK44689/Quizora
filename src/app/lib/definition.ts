@@ -7,6 +7,11 @@ export interface ProfileInfo {
   quizHistory: QuizHistoryItem[];
 }
 
+export interface LoginInfo {
+  email: string,
+  password: string
+}
+
 export interface UserQuizAnswer {
   choice: number;
   isCorrect: boolean;

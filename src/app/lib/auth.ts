@@ -1,12 +1,19 @@
-import { cookies } from "next/headers";
-import jwt from 'jsonwebtoken';
+import { LoginInfo } from "./definition";
 
-export async function getSession() {
-  const cookie = await cookies();
-  const session = cookie.get('session')?.value;
+export async function handleLogin(data: LoginInfo) {
+  const email = data.email;
+  const password = data.password;
 
-  if (!session) return null;
+  const response = await fetch("/api/login", {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
 
-  const result = await jwt.verify(session, `${process.env.JWT_SECRET}`);
-  return result;
+  if (response.ok) {
+    return response.json();
+  } else {
+    const data = await response.json();
+    console.error(data.error);
+  }
 }

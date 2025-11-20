@@ -1,63 +1,59 @@
 'use client';
 
+import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
+import { LoginInfo } from "../lib/definition";
+import * as Yup from 'yup';
+import useLoginSubmit from "../hooks/useSubmit";
 
 export default function Page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const { isLoading, response, submit } = useLoginSubmit();
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-
-    const response = await fetch("/api/login", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-
-    if (response.ok) {
-      router.push('/dashboard');
-    } else {
-      const data = await response.json();
-      console.error(data.error);
-    }
-  }
-
-  const handleLogout = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    await fetch("/api/logout", {
-      method: 'POST'
-    });
-
-    router.push('/');
-  }
+  const formik = useFormik({
+    initialValues: { email: "", password: "" },
+    onSubmit: async (values) => {
+      const data: LoginInfo = { email: values.email, password: values.password };
+      submit(data);
+    },
+    validationSchema:
+      Yup.object({
+        email: Yup.string().email("Please enter a valid email address.").required("Email is required."),
+        password: Yup.string().min(6, "Must be at least 6 characters").required("Password is required.")
+      })
+  });
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={formik.handleSubmit}>
+        <label>Email</label>
+        <br />
         <input
+          id="email"
+          name="email"
           type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={formik.handleChange}
+          value={formik.values.email}
         />
+        {formik.errors.email && formik.touched.email ? <div>{formik.errors.email}</div> : null}
+        <br />
+
+        <label>Password</label>
         <br />
         <input
+          id="password"
+          name="password"
           type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} />
+          onChange={formik.handleChange}
+          value={formik.values.password}
+        />
+        {formik.errors.password && formik.touched.password ? <div>{formik.errors.password}</div> : null}
         <br />
-        <button type='submit'>Login</button>
+        {response.type === 'error' ? <div>{response.message}</div> : null}
+        <button type="submit">Login</button>
       </form>
-      <form onSubmit={handleLogout}>
-        <button type='submit'>Logout</button>
-      </form>
-    </div>
+    </div >
   );
 }
