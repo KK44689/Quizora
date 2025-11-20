@@ -21,7 +21,8 @@ export async function POST(req: Request) {
 
     const payload = {
       user: {
-        id: user._id
+        id: user._id,
+        email: user.email
       }
     }
     const secret = process.env.JWT_SECRET!;

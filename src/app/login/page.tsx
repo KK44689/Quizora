@@ -1,15 +1,13 @@
 'use client';
 
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useActionState, useState } from "react";
 import { LoginInfo } from "../lib/definition";
 import * as Yup from 'yup';
 import useLoginSubmit from "../hooks/useSubmit";
 
 export default function Page() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const { isLoading, response, submit } = useLoginSubmit();
 
   const formik = useFormik({
