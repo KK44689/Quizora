@@ -20,10 +20,8 @@ export async function POST(req: Request) {
     }
 
     const payload = {
-      user: {
-        id: user._id,
-        email: user.email
-      }
+      userId: user._id,
+      email: user.email
     }
     const secret = process.env.JWT_SECRET!;
     const options: SignOptions = { expiresIn: Number(process.env.JWT_EXPIRES_IN) };

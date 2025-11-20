@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { jwtVerify } from 'jose';
+import { json } from 'stream/consumers';
 
 export type JwtPayload = {
-  id: string;
+  userId: string;
   email: string;
   iat?: number;
   exp?: number;
@@ -17,7 +18,9 @@ export type JwtPayload = {
 export async function verifyJwt(token: string) {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    return await jwtVerify(token, secret);
+    const result = await jwtVerify<JwtPayload>(token, secret);
+
+    return result;
   } catch (error) {
     console.error('JWT verification failed:', error);
     return null;

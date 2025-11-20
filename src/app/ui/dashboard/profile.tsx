@@ -1,17 +1,49 @@
+'use client'
+
 import Image from "next/image";
 import { ProfileInfo } from "@/app/lib/definition";
 import FlagIcon from "@/app/assets/icons/ant-design_flag-filled.svg";
 import CorrectIcon from "@/app/assets/icons/akar-icons_circle-check-fill.svg";
 import { poppins } from "../font";
-import { fetchUserById } from "../../api/users/route";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function Profile() {
-  //mock user id: wait for authentication
-  const userId = "691aeb45c58c242a1b47ad18";
-  const profile = await fetchUserById(userId);
+export default function Profile() {
+  const router = useRouter();
+  const [profile, setProfile] = useState({
+    firstName: "",
+    lastName: "",
+    image: "",
+    quizPassed: 0,
+    correctAnswers: 0
+  });
 
-  if(!profile) return <p>No user with id {userId} found.</p>
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch('/api/user');
+      console.log(res.ok);
 
+      if (res.ok) {
+        const data = await res.json();
+        setProfile(data);
+      }
+      else {
+        const data = await res.json();
+        console.error(data.error);
+        router.push('/login');
+      }
+    }
+
+    fetchUser();
+  }, [router]);
+  // //mock user id: wait for authentication
+  // // const userId = "691aeb45c58c242a1b47ad18";
+  // // const profile = await fetchUserById(userId);
+
+  if (!profile) return <p>No user with found.</p>
+
+  console.log(profile);
+  
   return (
     <div className={`flex flex-col md:flex-row grow w-full items-center md:justify-start gap-8`}>
       <Image
