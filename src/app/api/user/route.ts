@@ -15,7 +15,6 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
     }
 
-    console.log(`user route id email: ${payload?.payload.userId} ${payload?.payload.email}`);
     const db = await connectToDatabase();
     const collection = db.collection(`${process.env.USER_COLLECTION_NAME}`);
     const userId: string = payload?.payload.userId;

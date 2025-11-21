@@ -18,8 +18,10 @@ export interface UserQuizAnswer {
 }
 
 export interface QuizHistoryItem {
-  id: string;                 // MongoDB ObjectId (string form)
+  id: string;                
   answers: UserQuizAnswer[];
+  submittedDate: string;
+  highscore: string;
 }
 
 export interface Choice {
@@ -34,7 +36,7 @@ export interface Question {
   answer: number;
 }
 
-export interface Quiz {
+export interface QuizInfo {
   _id: string;
   name: string;
   description: string;

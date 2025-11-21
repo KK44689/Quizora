@@ -1,17 +1,17 @@
 'use client'
 
-import { Quiz } from "@/app/lib/definition";
+import { QuizInfo } from "@/app/lib/definition";
 import { poppins } from "../font";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Quizes() {
-  const [quizes, setQuizes] = useState<Quiz[]>([]);
+  const [quizes, setQuizes] = useState<QuizInfo[]>([]);
 
   useEffect(() => {
     const fetchQuizes = async () => {
-      const res = await fetch('/api/quizes');
+      const res = await fetch('/api/quiz');
 
       if (res.ok) {
         const data = await res.json();
@@ -45,9 +45,9 @@ export default function Quizes() {
   );
 }
 
-export function QuizCard({ info }: { info: Quiz }) {
+export function QuizCard({ info }: { info: QuizInfo }) {
   return (
-    <Link href={`/quiz/${info._id}`}>
+    <Link href={`/dashboard/quiz/${info._id}`}>
       <div className={`${poppins.className} text-white relative flex flex-1 flex-shrink-0 items-end justify-center`}>
         <Image
           src={info.image}

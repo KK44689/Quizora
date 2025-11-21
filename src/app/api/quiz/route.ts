@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "../../lib/db"
-import { Quiz } from "../../lib/definition";
+import { QuizInfo } from "../../lib/definition";
 
 export async function GET() {
   try {
     const db = await connectToDatabase();
-    const collection = await db.collection<Quiz>(`${process.env.QUIZ_COLLECTION_NAME}`);
+    const collection = await db.collection<QuizInfo>(`${process.env.QUIZ_COLLECTION_NAME}`);
 
     const quizes = await collection.find({}).toArray();
 

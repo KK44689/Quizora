@@ -9,8 +9,9 @@ export async function GET(
   try {
     const db = await connectToDatabase();
     const collection = db.collection(`${process.env.QUIZ_COLLECTION_NAME}`);
+    const param = await params;
 
-    const quiz = await collection.findOne({ _id: new ObjectId((await params).id) });
+    const quiz = await collection.findOne({ _id: new ObjectId(param.id) });
     if (!quiz) return NextResponse.json({ error: 'Quiz not found' }, { status: 404 });
 
     return NextResponse.json(quiz);
