@@ -23,7 +23,20 @@ module.exports = {
     },
   },
   images: {
-    domains: ['images.pexels.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        port: "",
+        pathname: "/photos/**",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.usercontent.google.com",
+        port: "",
+        pathname: "/download/**",
+      },
+    ],
   },
 };
 

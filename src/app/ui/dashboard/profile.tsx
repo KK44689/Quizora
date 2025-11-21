@@ -8,37 +8,7 @@ import { poppins } from "../font";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Profile() {
-  const router = useRouter();
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    image: "/profile-pic.svg",
-    quizPassed: 0,
-    correctAnswers: 0
-  });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await fetch('/api/user');
-      console.log(res.ok);
-
-      if (res.ok) {
-        const data = await res.json();
-        setProfile(data);
-      }
-      else {
-        const data = await res.json();
-        console.error(data.error);
-        router.push('/login');
-      }
-    }
-
-    fetchUser();
-  }, [router]);
-
-  if (!profile) return <p>No user with found.</p>
-
+export default function Profile({ profile }: { profile: ProfileInfo }) {
   return (
     <div className={`flex flex-col md:flex-row grow w-full items-center md:justify-start gap-8`}>
       <Image
