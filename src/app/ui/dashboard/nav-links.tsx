@@ -20,9 +20,8 @@ export default function NavLinks() {
         links.map((link) => {
           const LinkIcon = link.icon;
           return (
-            <div>
+            <div key={link.name}>
               <Link
-                key={link.name}
                 href={link.href}
                 className={clsx(`${poppins.className} font-bold flex w-[48px] h-[48px] md:w-full grow items-center justify-center gap-2 rounded-md p-1 md:p-3 text-sm text-[var(--theme-grey)] font-medium md:flex-none md:justify-start`,
                   {

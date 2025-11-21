@@ -35,6 +35,7 @@ export interface Question {
 }
 
 export interface Quiz {
+  _id: string;
   name: string;
   description: string;
   image: string;

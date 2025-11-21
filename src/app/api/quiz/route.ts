@@ -10,6 +10,7 @@ export async function GET() {
     const quizes = await collection.find({}).toArray();
 
     if (!quizes) return NextResponse.json({ error: "Quizes not found." }, { status: 404 });
+
     return NextResponse.json(quizes);
   } catch (e) {
     console.error(e);
