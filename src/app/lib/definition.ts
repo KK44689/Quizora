@@ -4,7 +4,7 @@ export interface ProfileInfo {
   image: string;
   quizPassed: number;
   correctAnswers: number;
-  quizHistory: QuizHistoryItem[];
+  quizHistory?: QuizHistoryItem[];
 }
 
 export interface LoginInfo {
@@ -40,8 +40,4 @@ export interface Quiz {
   image: string;
   passPoint: number;
   questions: Question[];
-}
-
-export interface QuizCollection {
-  docs: Quiz[];
 }

@@ -13,7 +13,7 @@ export default function Profile() {
   const [profile, setProfile] = useState({
     firstName: "",
     lastName: "",
-    image: "",
+    image: "/profile-pic.svg",
     quizPassed: 0,
     correctAnswers: 0
   });
@@ -36,18 +36,13 @@ export default function Profile() {
 
     fetchUser();
   }, [router]);
-  // //mock user id: wait for authentication
-  // // const userId = "691aeb45c58c242a1b47ad18";
-  // // const profile = await fetchUserById(userId);
 
   if (!profile) return <p>No user with found.</p>
 
-  console.log(profile);
-  
   return (
     <div className={`flex flex-col md:flex-row grow w-full items-center md:justify-start gap-8`}>
       <Image
-        src="/profile-pic.png"
+        src={profile.image}
         alt="profile picture"
         width={245}
         height={235}

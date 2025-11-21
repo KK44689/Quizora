@@ -3,7 +3,7 @@
     {
       "firstName": "Luna",
       "lastName": "Duck",
-      "image": "",
+      "image": "/profile-pic.png",
       "quizPassed": 1,
       "correctAnswers": 14,
       "quizHistory": [
