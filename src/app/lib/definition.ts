@@ -18,10 +18,12 @@ export interface UserQuizAnswer {
 }
 
 export interface QuizHistoryItem {
-  id: string;
+  quizId: string;
+  userId: string;
   answers: UserQuizAnswer[];
   submittedDate: string;
   highscore: string;
+  quizStatus: boolean;
 }
 
 export interface Choice {

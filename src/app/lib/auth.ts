@@ -17,3 +17,16 @@ export async function handleLogin(data: LoginInfo) {
     console.error(data.error);
   }
 }
+
+export async function logoutHandler() {
+  const response = await fetch("/api/logout", {
+    method: 'POST'
+  });
+
+  if (response.ok) {
+    return response.json();
+  } else {
+    const data = await response.json();
+    console.error(data.error);
+  }
+}

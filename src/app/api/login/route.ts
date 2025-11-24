@@ -1,7 +1,7 @@
 import { connectToDatabase } from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {

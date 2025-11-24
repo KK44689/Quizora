@@ -6,6 +6,7 @@ import Link from "next/link";
 import LogoutIcon from "@/app/assets/icons/ri_logout-box-fill.svg";
 import { poppins } from "../font";
 import { useRouter } from "next/navigation";
+import { logoutHandler } from "@/app/lib/auth";
 
 export default function SideNav() {
   const router = useRouter();
@@ -13,9 +14,7 @@ export default function SideNav() {
   async function handleLogout(event: React.MouseEvent<HTMLElement>): Promise<void> {
     event.preventDefault();
 
-    await fetch("/api/logout", {
-      method: 'POST'
-    });
+    await logoutHandler();
 
     router.push('/');
   }

@@ -5,24 +5,22 @@ import { poppins } from "../font";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { fetchQuizes } from "@/app/lib/quizes";
 
 export default function Quizes() {
   const [quizes, setQuizes] = useState<QuizInfo[]>([]);
 
   useEffect(() => {
-    const fetchQuizes = async () => {
-      const res = await fetch('/api/quiz');
-
-      if (res.ok) {
-        const data = await res.json();
-        setQuizes(data);
-      } else {
-        const data = await res.json();
-        console.error(data.error);
+    const quizes = async () => {
+      const data = await fetchQuizes();
+      if (!data) {
+        return;
       }
+
+      setQuizes(data);
     }
 
-    fetchQuizes();
+    quizes();
   }, []);
 
   return (

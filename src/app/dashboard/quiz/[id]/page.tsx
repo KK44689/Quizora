@@ -17,10 +17,12 @@ export default function Pages() {
   });
 
   const mockHistory: QuizHistoryItem = {
-    id: "",
+    quizId: "",
+    userId: "",
     answers: [],
     submittedDate: new Date().toLocaleDateString("en-GB"),
-    highscore: "-"
+    highscore: "-",
+    quizStatus: false
   };
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Pages() {
   return (
     <div>
       {/* TODO:Show quiz history data */}
-      <Quiz quiz={quiz} quizHistory={mockHistory} /> 
+      <Quiz quiz={quiz} quizHistory={mockHistory} />
     </div>
   );
 }
