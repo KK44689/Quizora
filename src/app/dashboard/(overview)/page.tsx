@@ -1,7 +1,7 @@
 'use client';
 
 import Profile from "@/app/ui/dashboard/profile";
-import Quizes from "@/app/ui/dashboard/quizes";
+import Quizes from "@/app/ui/quiz/quizes";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

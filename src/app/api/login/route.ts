@@ -24,9 +24,11 @@ export async function POST(req: Request) {
       email: user.email
     }
     const secret = process.env.JWT_SECRET!;
-    const options: SignOptions = { expiresIn: Number(process.env.JWT_EXPIRES_IN) };
+    // TODO: uncomment expires token
+    // const options: SignOptions = { expiresIn: Number(process.env.JWT_EXPIRES_IN) };
 
-    const token = jwt.sign(payload, secret, options);
+    const token = jwt.sign(payload, secret);
+    // const token = jwt.sign(payload, secret, options);
 
     const response = NextResponse.json({ message: token });
     response.cookies.set('session', token, {

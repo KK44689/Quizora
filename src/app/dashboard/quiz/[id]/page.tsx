@@ -1,7 +1,7 @@
 'use client';
 
 import { QuizHistoryItem, QuizInfo } from "@/app/lib/definition";
-import { Quiz } from "@/app/ui/dashboard/quiz-game";
+import { Quiz } from "@/app/ui/quiz/quiz-game";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,6 @@ export default function Pages() {
       if (res.ok) {
         const data = await res.json();
         setQuiz(data);
-        console.log(`quiz page :${data}`);
       } else {
         const data = await res.json();
         console.error(data.error);

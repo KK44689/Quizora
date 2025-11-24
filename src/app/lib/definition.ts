@@ -18,7 +18,7 @@ export interface UserQuizAnswer {
 }
 
 export interface QuizHistoryItem {
-  id: string;                
+  id: string;
   answers: UserQuizAnswer[];
   submittedDate: string;
   highscore: string;
@@ -43,4 +43,9 @@ export interface QuizInfo {
   image: string;
   passPoint: number;
   questions: Question[];
+}
+
+export interface QuizGameplayInfo {
+  currentQuestionId: number;
+  quizLength: number;
 }

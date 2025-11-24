@@ -23,7 +23,6 @@ export default function RootLayout({
   useEffect(() => {
     const fetchUser = async () => {
       const res = await fetch('/api/user');
-      console.log(res.ok);
 
       if (res.ok) {
         const data = await res.json();
