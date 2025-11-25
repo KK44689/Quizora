@@ -20,17 +20,13 @@ export function QuizConfirmPanel({
 
   };
 
-  const onBack = () => {
-
-  };
-
   return (
     <>
       {isShowConfirmReview ?
         <QuizConfirmReviewPanel
           score={quizResult.score}
+          isPassed={quizResult.quizStatus}
           onReview={onReview}
-          onBack={onBack}
         /> :
         <QuizConfirmPanelDetails
           onClose={onClose}

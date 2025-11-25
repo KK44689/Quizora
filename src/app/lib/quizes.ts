@@ -47,24 +47,10 @@ export const fetchQuizById = async (id: string) => {
 export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) => {
   const quizHistoryByUser = await fetch(`/api/quiz-history/${userId}`);
   const data = await quizHistoryByUser.json();
+  const quizHistoryByQuizId = data.quizHistory.filter((quiz: QuizHistoryItem) => quiz.quizId === quizId);
 
-  if (quizHistoryByUser.ok) {
-    return data.filter((quiz: QuizHistoryItem) => quiz.quizId === quizId);
-  } else {
-    console.error('Failed to fetch quiz history by quiz id', data.error);
-  }
-}
-
-export const getQuizHighScore = async (userId: string, quizId: string) => {
-  const res = await fetch(`/api/quiz-history/${userId}`);
-  const data = await res.json();
-  const quizResult = data.filter((quiz: QuizHistoryItem) => quiz.quizId === quizId);
-  console.log(`quizResult: ${quizResult.join()}`);
-  const allHighScore = quizResult.map((quiz: QuizHistoryItem) => quiz.score);
-  const highscore = Math.max(...allHighScore);
-
-  if (res.ok) {
-    return highscore;
+  if (quizHistoryByUser.ok && quizHistoryByQuizId) {
+    return quizHistoryByQuizId;
   } else {
     console.error(data.error);
   }

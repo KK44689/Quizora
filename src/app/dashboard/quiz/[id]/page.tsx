@@ -19,25 +19,49 @@ export default function Pages() {
     questions: []
   });
 
-  const [quizHistory, setQuizHistory] = useState<QuizHistoryItem | null>(null);
+  const [submittedDate, setSubmittedDate] = useState<string | null>(null);
+  const [highscore, setHighscore] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchQuiz = async () => {
-      const data = await fetchQuizById(id);
-      if (data) setQuiz(data);
+    const fetchData = async () => {
+      try {
+        const [quizData, quizHistoryData] = await Promise.all([
+          fetchQuizById(id),
+          fetchQuizHistoryByQuizId(profile._id, id)
+        ]);
+
+        if (quizHistoryData) {
+          // fetch latest submitted date
+          const date = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.submittedDate);
+          const latestDate = new Date(
+            Math.max(...date.map((d: string) => new Date(d).getTime()))
+          );
+
+          console.log(latestDate);
+          setSubmittedDate(isNaN(latestDate.getTime()) ? null : latestDate.toLocaleDateString());
+
+          // fetch score
+          const allHighScore = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.score);
+          console.log(allHighScore.length);
+          const highscore = allHighScore.length === 0 ? null : Math.max(...allHighScore);
+
+          setHighscore(highscore);
+        }
+
+        if (quizData) {
+          setQuiz(quizData);
+        }
+      } catch (e) {
+        console.error('Failed to fetch quiz history.', e);
+      }
     }
 
-    const fetchQuizHistory = async () => {
-      const data = await fetchQuizHistoryByQuizId(profile._id, id);
-      if (data) setQuizHistory(data);
-    }
-
-    fetchQuiz();
-  }, [id]);
+    fetchData();
+  }, [id, profile?._id]);
 
   return (
     <div>
-      <Quiz quiz={quiz} quizHistory={quizHistory} />
+      <Quiz quiz={quiz} submittedDate={submittedDate} highscore={highscore} />
     </div>
   );
 }
