@@ -1,12 +1,15 @@
 'use client';
 
+import { useUser } from "@/app/context/userContext";
 import { QuizHistoryItem, QuizInfo } from "@/app/lib/definition";
+import { fetchQuizById, fetchQuizHistoryByQuizId } from "@/app/lib/quizes";
 import { Quiz } from "@/app/ui/quiz/quiz-game";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Pages() {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
+  const profile = useUser();
   const [quiz, setQuiz] = useState<QuizInfo>({
     _id: "",
     name: "",
@@ -16,26 +19,17 @@ export default function Pages() {
     questions: []
   });
 
-  const mockHistory: QuizHistoryItem = {
-    quizId: "",
-    userId: "",
-    answers: [],
-    submittedDate: new Date().toLocaleDateString("en-GB"),
-    highscore: "-",
-    quizStatus: false
-  };
+  const [quizHistory, setQuizHistory] = useState<QuizHistoryItem | null>(null);
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      const res = await fetch(`/api/quiz/${id}`);
+      const data = await fetchQuizById(id);
+      if (data) setQuiz(data);
+    }
 
-      if (res.ok) {
-        const data = await res.json();
-        setQuiz(data);
-      } else {
-        const data = await res.json();
-        console.error(data.error);
-      }
+    const fetchQuizHistory = async () => {
+      const data = await fetchQuizHistoryByQuizId(profile._id, id);
+      if (data) setQuizHistory(data);
     }
 
     fetchQuiz();
@@ -43,8 +37,7 @@ export default function Pages() {
 
   return (
     <div>
-      {/* TODO:Show quiz history data */}
-      <Quiz quiz={quiz} quizHistory={mockHistory} />
+      <Quiz quiz={quiz} quizHistory={quizHistory} />
     </div>
   );
 }

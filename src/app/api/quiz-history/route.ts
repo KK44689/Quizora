@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
       quizId: data.quizId,
       userId: data.userId,
       answers: data.answers,
-      submittedDate: new Date().toLocaleDateString(),
-      highscore: data.highscore,
+      submittedDate: new Date().toISOString().split("T")[0],
+      score: data.score,
       quizStatus: data.quizStatus
     });
 

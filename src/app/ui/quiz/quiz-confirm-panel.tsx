@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
+import { QuizHistoryItem } from "@/app/lib/definition";
+import { postQuizHistory } from "@/app/lib/quizes";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function QuizConfirmPanel({
-  score,
+  quizResult,
   onClose
 }: {
-  score: number,
+  quizResult: QuizHistoryItem,
   onClose: () => void
 }) {
   const [isShowConfirmReview, setIsShowConfirmReview] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const onReview = () => {
 
@@ -22,13 +28,23 @@ export function QuizConfirmPanel({
     <>
       {isShowConfirmReview ?
         <QuizConfirmReviewPanel
-          score={score}
+          score={quizResult.score}
           onReview={onReview}
           onBack={onBack}
         /> :
         <QuizConfirmPanelDetails
           onClose={onClose}
-          onConfirm={() => setIsShowConfirmReview(true)}
+          onConfirm={async () => {
+            const response = await postQuizHistory(quizResult);
+
+            if (!response) {
+              console.error('Failed to post quiz result');
+              router.push(pathname);
+              return;
+            }
+
+            setIsShowConfirmReview(true)
+          }}
         />}
     </>
   );

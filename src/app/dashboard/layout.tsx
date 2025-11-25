@@ -6,6 +6,7 @@ import SideNav from "../ui/dashboard/sidenav";
 import Avatar from "../ui/dashboard/avatar";
 import { ProfileInfo } from "../lib/definition";
 import { useEffect, useState } from "react";
+import { UserProvider } from "../context/userContext";
 
 export default function RootLayout({
   children,
@@ -13,6 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [profile, setProfile] = useState<ProfileInfo>({
+    _id: "",
     firstName: "",
     lastName: "",
     image: "/profile-pic.svg",
@@ -38,16 +40,18 @@ export default function RootLayout({
   }, []);
 
   return (
-    <div className="flex min-h-screen">
-      <SideNav />
-      <div className="flex flex-col flex-1">
-        <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
-          <SearchBar placeholder="Search Quiz" />
-          <Avatar profile={profile} />
-        </header>
+    <UserProvider>
+      <div className="flex min-h-screen">
+        <SideNav />
+        <div className="flex flex-col flex-1">
+          <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
+            <SearchBar placeholder="Search Quiz" />
+            <Avatar profile={profile} />
+          </header>
 
-        <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
+          <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
+        </div>
       </div>
-    </div>
+    </UserProvider>
   );
 }

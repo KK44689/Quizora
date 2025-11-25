@@ -1,38 +1,11 @@
 'use client';
 
+import { useUser } from "@/app/context/userContext";
 import Profile from "@/app/ui/dashboard/profile";
 import Quizes from "@/app/ui/quiz/quizes";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Page() {
-  const router = useRouter();
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    image: "/profile-pic.svg",
-    quizPassed: 0,
-    correctAnswers: 0
-  });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await fetch('/api/user');
-      console.log(res.ok);
-
-      if (res.ok) {
-        const data = await res.json();
-        setProfile(data);
-      }
-      else {
-        const data = await res.json();
-        console.error(data.error);
-        router.push('/login');
-      }
-    }
-
-    fetchUser();
-  }, [router]);
+  const profile = useUser();
 
   return (
     <div>

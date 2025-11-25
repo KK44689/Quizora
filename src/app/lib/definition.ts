@@ -1,10 +1,10 @@
 export interface ProfileInfo {
+  _id: string;
   firstName: string;
   lastName: string;
   image: string;
   quizPassed: number;
   correctAnswers: number;
-  quizHistory?: QuizHistoryItem[];
 }
 
 export interface LoginInfo {
@@ -22,7 +22,7 @@ export interface QuizHistoryItem {
   userId: string;
   answers: UserQuizAnswer[];
   submittedDate: string;
-  highscore: string;
+  score: number;
   quizStatus: boolean;
 }
 

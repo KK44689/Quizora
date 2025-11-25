@@ -1,8 +1,10 @@
-import { Choice, Question, UserQuizAnswer } from "@/app/lib/definition";
+import { Choice, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
 import { useState } from "react";
 import { QuizConfirmPanel } from "./quiz-confirm-panel";
+import { useParams } from "next/navigation";
+import { useUser } from "@/app/context/userContext";
 
-export function QuizPanel({ question: questions, onClose }: { question: Question[], onClose: () => void }) {
+export function QuizPanel({ questions, passPoints, onClose }: { questions: Question[], passPoints: number, onClose: () => void }) {
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
@@ -51,10 +53,22 @@ export function QuizPanel({ question: questions, onClose }: { question: Question
     return answer.isCorrect ? (acc + 1) : acc;
   }, 0);
 
+  const { id } = useParams() as { id: string };
+  const profile = useUser();
+
+  const quizResult: QuizHistoryItem = {
+    quizId: id,
+    userId: profile._id,
+    answers: answers,
+    submittedDate: new Date().toLocaleDateString(),
+    score: totalScore * 10,
+    quizStatus: totalScore >= passPoints
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       {isShowConfirm ?
-        <QuizConfirmPanel onClose={() => setIsShowConfirm(false)} score={totalScore * 10} /> :
+        <QuizConfirmPanel quizResult={quizResult} onClose={() => setIsShowConfirm(false)} /> :
         <QuestionDetails
           currentQuestion={currentQuestion}
           isLastQuestion={isLastQuestion}
