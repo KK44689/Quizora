@@ -7,21 +7,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchQuizes } from "@/app/lib/quizes";
 
-export default function Quizes() {
-  const [quizes, setQuizes] = useState<QuizInfo[]>([]);
+export default function Quizes({ quizes }: { quizes: QuizInfo[] }) {
+  // const [quizes, setQuizes] = useState<QuizInfo[]>([]);
 
-  useEffect(() => {
-    const quizes = async () => {
-      const data = await fetchQuizes();
-      if (!data) {
-        return;
-      }
+  // useEffect(() => {
+  //   const quizes = async () => {
+  //     const data = await fetchQuizes();
+  //     if (!data) {
+  //       return;
+  //     }
 
-      setQuizes(data);
-    }
+  //     setQuizes(data);
+  //   }
 
-    quizes();
-  }, []);
+  //   quizes();
+  // }, []);
 
   return (
     <div className={`flex flex-col gap-6`}>
