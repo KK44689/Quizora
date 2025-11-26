@@ -1,18 +1,32 @@
-import { Choice, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
-import { useState } from "react";
+import { Choice, ChoiceStatus, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
+import { useReducer, useState } from "react";
 import { QuizConfirmPanel } from "./quiz-confirm-panel";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/app/context/userContext";
+import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
+import { postQuizHistory } from "@/app/lib/quizes";
+import clsx from "clsx";
+
+// Define Panel States
+const PanelState = {
+  Quiz: 'quiz',
+  Confirm: 'confirm',
+  ConfirmReview: 'confirmReview',
+  Review: 'review'
+}
+
+type PanelState = typeof PanelState[keyof typeof PanelState];
 
 export function QuizPanel({ questions, passPoints, onClose }: { questions: Question[], passPoints: number, onClose: () => void }) {
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
-  const [isShowConfirm, setIsShowConfirm] = useState(false);
 
-  const onAnswer = (choiceId: number) => {
-    setAnswers(prev => [...prev, { choice: choiceId, isCorrect: currentQuestion.answer === choiceId }]);
+  const [panelState, setPanelState] = useState(PanelState.Quiz);
+  const router = useRouter();
+  const pathname = usePathname();
 
+  const nextQuestion = () => {
     if (currentQuestion.id === questions.length) {
       setIsLastQuestion(true);
       console.log(answers.map(answer => answer.choice));
@@ -27,6 +41,11 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
     }
 
     setCurrentQuestion(nextQuestion);
+  }
+
+  const onAnswer = (choiceId: number) => {
+    setAnswers(prev => [...prev, { id: currentQuestion.id, choice: choiceId, isCorrect: currentQuestion.answer === choiceId }]);
+    nextQuestion();
   }
 
   const onBack = () => {
@@ -46,7 +65,25 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
   };
 
   const onSubmit = async () => {
-    setIsShowConfirm(true);
+    setPanelState(PanelState.Confirm);
+  }
+
+  const onConfirm = async () => {
+    const response = await postQuizHistory(quizResult);
+
+    if (!response) {
+      console.error('Failed to post quiz result');
+      router.push(pathname);
+      return;
+    }
+
+    setUser((prev) => ({
+      ...prev!,
+      quizPassed: prev!.quizPassed + 1,
+      correctAnswers: prev!.correctAnswers + quizResult.score
+    }))
+
+    setPanelState(PanelState.ConfirmReview);
   }
 
   const totalScore = answers.reduce((acc, answer) => {
@@ -67,17 +104,47 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      {isShowConfirm ?
-        <QuizConfirmPanel quizResult={quizResult} onClose={() => setIsShowConfirm(false)} /> :
+      {panelState == PanelState.Quiz &&
         <QuestionDetails
           currentQuestion={currentQuestion}
           isLastQuestion={isLastQuestion}
+          status={{ isReview: false, answers: answers }}
           onClose={onClose}
           onBack={onBack}
           onAnswer={onAnswer}
           onSubmit={onSubmit}
+          nextQuestion={nextQuestion}
         />
       }
+
+      {panelState === PanelState.Confirm &&
+        <QuizConfirmPanel onConfirm={onConfirm} onClose={() => setPanelState(PanelState.Quiz)} />
+      }
+
+      {panelState === PanelState.ConfirmReview &&
+        <QuizConfirmReviewPanel
+          score={quizResult.score}
+          isPassed={quizResult.quizStatus}
+          onReview={() => setPanelState(PanelState.Review)}
+        />
+      }
+
+      {panelState == PanelState.Review &&
+        <div>
+          <p>{answers[0].choice}</p>
+          <QuestionDetails
+            currentQuestion={currentQuestion}
+            isLastQuestion={isLastQuestion}
+            status={{ isReview: true, answers: answers }}
+            onClose={onClose}
+            onBack={onBack}
+            onAnswer={onAnswer}
+            onSubmit={onSubmit}
+            nextQuestion={nextQuestion}
+          />
+        </div>
+      }
+
     </div>
   );
 }
@@ -85,17 +152,21 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
 function QuestionDetails({
   currentQuestion,
   isLastQuestion,
+  status,
   onClose,
   onBack,
   onAnswer,
-  onSubmit
+  onSubmit,
+  nextQuestion
 }: {
   currentQuestion: Question,
   isLastQuestion: boolean,
+  status: { isReview: boolean, answers: UserQuizAnswer[] },
   onClose: () => void,
   onBack: () => void,
   onAnswer: (id: number) => void,
-  onSubmit: () => void
+  onSubmit: () => void,
+  nextQuestion: () => void
 }) {
   return (
     <div className="bg-white rounded-lg p-10 w-full max-w-2xl h-155 shadow-lg relative">
@@ -127,11 +198,19 @@ function QuestionDetails({
             className="flex flex-col gap-8"
             key={choice.id}
           >
-            <Choices choice={choice} onChoiceClick={() => onAnswer(choice.id)} />
+            <Choices
+              choice={choice}
+              status={{
+                isReview: status.isReview,
+                isCorrect: choice.id === currentQuestion.answer,
+                isUserAnswer: status.answers.find(answer => answer.id === currentQuestion.id)?.choice === choice.id
+              }}
+              onChoiceClick={() => onAnswer(choice.id)}
+            />
           </div>))
       }
 
-      {isLastQuestion && (
+      {isLastQuestion && !status.isReview && (
         <button
           className="bg-[var(--theme-blue)] text-white"
           onClick={onSubmit}
@@ -139,14 +218,28 @@ function QuestionDetails({
           Submit
         </button>
       )}
+
+      {
+        status.isReview && (
+          <button
+            className="bg-[var(--theme-blue)] text-white"
+            onClick={nextQuestion}
+          >
+            Next
+          </button>
+        )
+      }
     </div>
   );
 }
 
-function Choices({ choice, onChoiceClick }: { choice: Choice, onChoiceClick: () => void }) {
+function Choices({ choice, status, onChoiceClick }: { choice: Choice, status: ChoiceStatus, onChoiceClick: () => void }) {
   return (
     <button
-      className="border border-solid p-8"
+      className={clsx("border border-solid p-8 w-full", {
+        "border border-solid p-8 border-green-500 text-green-500 w-full": status.isReview && status.isCorrect,
+        "border border-solid p-8 border-red-500 text-red-500 w-full": status.isReview && !status.isCorrect && status.isUserAnswer,
+      })}
       onClick={onChoiceClick}
     >
       {choice.choice}

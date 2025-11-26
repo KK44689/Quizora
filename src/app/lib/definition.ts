@@ -13,6 +13,7 @@ export interface LoginInfo {
 }
 
 export interface UserQuizAnswer {
+  id: number;
   choice: number;
   isCorrect: boolean;
 }
@@ -29,6 +30,12 @@ export interface QuizHistoryItem {
 export interface Choice {
   id: number;
   choice: string;
+}
+
+export interface ChoiceStatus {
+  isReview: boolean;
+  isCorrect?: boolean;
+  isUserAnswer?: boolean;
 }
 
 export interface Question {
