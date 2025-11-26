@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchCurrentUser } from "../lib/users";
 import { ProfileInfo } from "../lib/definition";

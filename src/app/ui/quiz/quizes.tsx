@@ -3,29 +3,11 @@
 import { QuizInfo } from "@/app/lib/definition";
 import { poppins } from "../font";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { fetchQuizes } from "@/app/lib/quizes";
 
 export default function Quizes({ quizes }: { quizes: QuizInfo[] }) {
-  // const [quizes, setQuizes] = useState<QuizInfo[]>([]);
-
-  // useEffect(() => {
-  //   const quizes = async () => {
-  //     const data = await fetchQuizes();
-  //     if (!data) {
-  //       return;
-  //     }
-
-  //     setQuizes(data);
-  //   }
-
-  //   quizes();
-  // }, []);
-
   return (
     <div className={`flex flex-col gap-6`}>
-      <h1 className={`${poppins.className} text-[var(--theme-blue)] font-bold text-base md:text-2xl `}>Featured Quizes</h1>
       <div className="flex flex-col md:grid md:grid-cols-3 gap-8 ">
         {
           quizes.map((quiz) => {
