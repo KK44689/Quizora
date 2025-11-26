@@ -23,7 +23,7 @@ export function Quiz({ quiz, submittedDate, highscore }: { quiz: QuizInfo, submi
       <div className="flex flex-col gap-6 text-left md:w-full md:items-center md:justify-center">
         <p className="text-left">
           Submitted Date: {submittedDate ?? "-"} <br />
-          Your Highscore: {highscore ?? "-"} <br />
+          Your Highscore: {highscore === null ? "-" : highscore * 10} <br />
           Pass Points: {quiz.passPoint * 10} <br />
         </p>
         <button

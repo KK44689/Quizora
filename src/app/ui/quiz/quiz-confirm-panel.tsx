@@ -4,6 +4,7 @@ import { QuizHistoryItem } from "@/app/lib/definition";
 import { postQuizHistory } from "@/app/lib/quizes";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/context/userContext";
 
 export function QuizConfirmPanel({
   quizResult,
@@ -15,6 +16,7 @@ export function QuizConfirmPanel({
   const [isShowConfirmReview, setIsShowConfirmReview] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { user, setUser } = useUser();
 
   const onReview = () => {
 
@@ -39,6 +41,12 @@ export function QuizConfirmPanel({
               return;
             }
 
+            setUser((prev) => ({
+              ...prev!,
+              quizPassed: prev!.quizPassed + 1,
+              correctAnswers: prev!.correctAnswers + quizResult.score
+            }))
+            
             setIsShowConfirmReview(true)
           }}
         />}

@@ -1,19 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchCurrentUser } from "../lib/users";
+import { ProfileInfo } from "../lib/definition";
 
-interface UserContextType {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  image: string;
-  quizPassed: number;
-  correctAnswers: number;
-}
-
-const UserContext = createContext<UserContextType | null>(null);
+const UserContext = createContext<{
+  user: ProfileInfo | null;
+  setUser: React.Dispatch<React.SetStateAction<ProfileInfo | null>>;
+} | null>(null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<UserContextType>();
+  const [user, setUser] = useState<ProfileInfo | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,10 +19,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUser();
   }, []);
 
-  if (!user) return;
+  if (!user) return <div>Loading...</div>;
 
   return (
-    <UserContext.Provider value={{ _id: user._id, firstName: user.firstName, lastName: user.lastName, image: user.image, quizPassed: user.quizPassed, correctAnswers: user.correctAnswers }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );

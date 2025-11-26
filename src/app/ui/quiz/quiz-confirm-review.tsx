@@ -10,7 +10,7 @@ export function QuizConfirmReviewPanel({
   onReview: () => void,
 }) {
   const router = useRouter();
-  
+
   const onBack = () => {
     router.push('/dashboard');
   }
@@ -18,7 +18,7 @@ export function QuizConfirmReviewPanel({
   return (
     <div className="bg-white rounded-lg p-10 md:w-119 max-w-2xl md:h-109 shadow-lg relative flex flex-col items-center justify-center gap-9">
       <h1>{isPassed ? "Congratulations you have passed" : "Almost there! Try again!"}</h1>
-      <p>You scored {score}%</p>
+      <p>You scored {score * 10}%</p>
       <div className="flex flex-row gap-8">
         <button
           className=""

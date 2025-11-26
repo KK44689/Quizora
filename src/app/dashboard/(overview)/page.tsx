@@ -5,12 +5,16 @@ import Profile from "@/app/ui/dashboard/profile";
 import Quizes from "@/app/ui/quiz/quizes";
 
 export default function Page() {
-  const profile = useUser();
+  const { user, setUser } = useUser();
 
   return (
     <div>
       <main className="flex flex-col gap-12">
-        <Profile profile={profile} />
+        {
+          user === null ?
+            <div>Loading...</div> :
+            <Profile profile={user} />
+        }
         <Quizes />
       </main>
     </div>

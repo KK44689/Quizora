@@ -54,14 +54,14 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
   }, 0);
 
   const { id } = useParams() as { id: string };
-  const profile = useUser();
+  const { user, setUser } = useUser();
 
   const quizResult: QuizHistoryItem = {
     quizId: id,
-    userId: profile._id,
+    userId: user!._id,
     answers: answers,
     submittedDate: new Date().toLocaleDateString(),
-    score: totalScore * 10,
+    score: totalScore,
     quizStatus: totalScore >= passPoints
   }
 
