@@ -15,45 +15,50 @@ export default function Pages() {
   const [submittedDate, setSubmittedDate] = useState<string | null>(null);
   const [highscore, setHighscore] = useState<number | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [quizData, quizHistoryData] = await Promise.all([
-          fetchQuizById(id),
-          fetchQuizHistoryByQuizId(user!._id, id)
-        ]);
+  const fetchData = async () => {
+    try {
+      const [quizData, quizHistoryData] = await Promise.all([
+        fetchQuizById(id),
+        fetchQuizHistoryByQuizId(user!._id, id)
+      ]);
 
-        if (quizHistoryData) {
-          // fetch latest submitted date
-          const date = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.submittedDate);
-          const latestDate = new Date(
-            Math.max(...date.map((d: string) => new Date(d).getTime()))
-          );
+      if (quizHistoryData) {
+        // fetch latest submitted date
+        const date = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.submittedDate);
+        const latestDate = new Date(
+          Math.max(...date.map((d: string) => new Date(d).getTime()))
+        );
 
-          setSubmittedDate(isNaN(latestDate.getTime()) ? null : latestDate.toLocaleDateString());
+        setSubmittedDate(isNaN(latestDate.getTime()) ? null : latestDate.toLocaleDateString());
 
-          // fetch score
-          const allHighScore = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.score);
-          const highscore = allHighScore.length === 0 ? null : Math.max(...allHighScore);
+        // fetch score
+        const allHighScore = quizHistoryData.map((quiz: QuizHistoryItem) => quiz.score);
+        const highscore = allHighScore.length === 0 ? null : Math.max(...allHighScore);
 
-          setHighscore(highscore);
-        }
-
-        if (quizData) {
-          setQuiz(quizData);
-        }
-      } catch (e) {
-        console.error('Failed to fetch quiz history.', e);
+        setHighscore(highscore);
       }
-    }
 
+      if (quizData) {
+        setQuiz(quizData);
+      }
+    } catch (e) {
+      console.error('Failed to fetch quiz history.', e);
+    }
+  }
+
+  useEffect(() => {
     fetchData();
   }, []);
 
   return (
     <div>
       {quiz === null ? <div>Loading...</div> :
-        <Quiz quiz={quiz!} submittedDate={submittedDate} highscore={highscore} />
+        <Quiz
+          quiz={quiz!}
+          submittedDate={submittedDate}
+          highscore={highscore}
+          onRefresh={fetchData}
+        />
       }
     </div>
   );

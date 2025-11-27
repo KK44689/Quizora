@@ -17,7 +17,15 @@ const PanelState = {
 
 type PanelState = typeof PanelState[keyof typeof PanelState];
 
-export function QuizPanel({ questions, passPoints, onClose }: { questions: Question[], passPoints: number, onClose: () => void }) {
+export function QuizPanel({
+  questions,
+  passPoints,
+  onClose
+}: {
+  questions: Question[],
+  passPoints: number,
+  onClose: () => void
+}) {
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
   const [isLastQuestion, setIsLastQuestion] = useState(false);

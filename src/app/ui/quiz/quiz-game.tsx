@@ -3,7 +3,17 @@ import Image from 'next/image';
 import { QuizPanel } from "./quiz-panel";
 import { useState } from "react";
 
-export function Quiz({ quiz, submittedDate, highscore }: { quiz: QuizInfo, submittedDate: string | null, highscore: number | null }) {
+export function Quiz({
+  quiz,
+  submittedDate,
+  highscore,
+  onRefresh
+}: {
+  quiz: QuizInfo,
+  submittedDate: string | null,
+  highscore: number | null,
+  onRefresh: () => void
+}) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -35,7 +45,16 @@ export function Quiz({ quiz, submittedDate, highscore }: { quiz: QuizInfo, submi
         >
           Start
         </button>
-        {showPanel && <QuizPanel questions={questions} passPoints={quiz.passPoint} onClose={() => setShowPanel(false)} />}
+        {showPanel &&
+          <QuizPanel
+            questions={questions}
+            passPoints={quiz.passPoint}
+            onClose={() => {
+              setShowPanel(false)
+              onRefresh();
+            }}
+          />
+        }
       </div>
     </div>
   );
