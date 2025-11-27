@@ -44,7 +44,17 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
   }
 
   const onAnswer = (choiceId: number) => {
-    setAnswers(prev => [...prev, { id: currentQuestion.id, choice: choiceId, isCorrect: currentQuestion.answer === choiceId }]);
+    const answerId = answers.map(answer => answer.id);
+    if (answerId.includes(currentQuestion.id)) {
+      setAnswers(prev => prev.map(item =>
+        item.id === currentQuestion.id ?
+          { ...item, choice: choiceId, isCorrect: currentQuestion.answer === choiceId } :
+          item
+      ));
+
+    } else {
+      setAnswers(prev => [...prev, { id: currentQuestion.id, choice: choiceId, isCorrect: currentQuestion.answer === choiceId }]);
+    }
     nextQuestion();
   }
 
