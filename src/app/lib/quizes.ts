@@ -78,3 +78,26 @@ export const fetchUserQuizHistory = async (userId: string) => {
     console.error(err);
   }
 }
+
+export const fetchUserQuizData = async (userId: string) => {
+  try {
+    const [quizHistoryRes] = await Promise.all([
+      fetch(`/api/quiz-history/${userId}`),
+    ]);
+
+    const [quizHistory] = await Promise.all([
+      quizHistoryRes.json(),
+    ])
+
+    let quizPassed = 0;
+    let correctAnswers = 0;
+    quizHistory.quizHistory.forEach((history: QuizHistoryItem) => {
+      if (history.quizStatus) quizPassed += 1;
+      correctAnswers += history.score;
+    });
+
+    return { quizPassed: quizPassed, correctAnswers: correctAnswers };
+  } catch (err) {
+    console.error(err);
+  }
+}

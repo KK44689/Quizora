@@ -2,7 +2,7 @@
 
 import { useUser } from "@/app/context/userContext";
 import { QuizInfo } from "@/app/lib/definition";
-import { fetchQuizes } from "@/app/lib/quizes";
+import { fetchQuizes, fetchUserQuizData } from "@/app/lib/quizes";
 import Profile from "@/app/ui/dashboard/profile";
 import { poppins } from "@/app/ui/font";
 import Quizes from "@/app/ui/quiz/quizes";
@@ -13,16 +13,25 @@ export default function Page() {
   const [quizes, setQuizes] = useState<QuizInfo[] | null>(null);
 
   useEffect(() => {
-    const quizes = async () => {
-      const data = await fetchQuizes();
-      if (!data) {
+    const fetchData = async () => {
+      const [userQuiz, quizes] = await Promise.all([
+        fetchUserQuizData(user!._id),
+        fetchQuizes(),
+      ]);
+
+      if (!quizes || !userQuiz) {
         return <div>Loading...</div>;
       }
 
-      setQuizes(data);
+      setQuizes(quizes);
+      setUser((prev) => ({
+        ...prev!,
+        quizPassed: userQuiz.quizPassed,
+        correctAnswers: userQuiz.correctAnswers
+      }))
     }
 
-    quizes();
+    fetchData();
   }, []);
 
   return (

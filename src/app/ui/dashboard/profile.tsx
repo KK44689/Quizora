@@ -5,8 +5,6 @@ import { ProfileInfo } from "@/app/lib/definition";
 import FlagIcon from "@/app/assets/icons/ant-design_flag-filled.svg";
 import CorrectIcon from "@/app/assets/icons/akar-icons_circle-check-fill.svg";
 import { poppins } from "../font";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Profile({ profile }: { profile: ProfileInfo }) {
   return (

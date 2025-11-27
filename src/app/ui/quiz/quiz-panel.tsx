@@ -1,5 +1,5 @@
 import { Choice, ChoiceStatus, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { QuizConfirmPanel } from "./quiz-confirm-panel";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/app/context/userContext";
@@ -77,12 +77,7 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
       return;
     }
 
-    setUser((prev) => ({
-      ...prev!,
-      quizPassed: prev!.quizPassed + 1,
-      correctAnswers: prev!.correctAnswers + quizResult.score
-    }))
-
+    setCurrentQuestion(questions[0]);
     setPanelState(PanelState.ConfirmReview);
   }
 
