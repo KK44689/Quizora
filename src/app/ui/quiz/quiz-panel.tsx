@@ -138,8 +138,6 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
             status={{ isReview: true, answers: answers }}
             onClose={onClose}
             onBack={onBack}
-            onAnswer={onAnswer}
-            onSubmit={onSubmit}
             nextQuestion={nextQuestion}
           />
         </div>
@@ -164,8 +162,8 @@ function QuestionDetails({
   status: { isReview: boolean, answers: UserQuizAnswer[] },
   onClose: () => void,
   onBack: () => void,
-  onAnswer: (id: number) => void,
-  onSubmit: () => void,
+  onAnswer?: (id: number) => void,
+  onSubmit?: () => void,
   nextQuestion: () => void
 }) {
   return (
@@ -205,7 +203,7 @@ function QuestionDetails({
                 isCorrect: choice.id === currentQuestion.answer,
                 isUserAnswer: status.answers.find(answer => answer.id === currentQuestion.id)?.choice === choice.id
               }}
-              onChoiceClick={() => onAnswer(choice.id)}
+              onChoiceClick={() => { if (onAnswer) onAnswer(choice.id) }}
             />
           </div>))
       }
@@ -213,7 +211,7 @@ function QuestionDetails({
       {isLastQuestion && !status.isReview && (
         <button
           className="bg-[var(--theme-blue)] text-white"
-          onClick={onSubmit}
+          onClick={() => { if (onSubmit) onSubmit() }}
         >
           Submit
         </button>
