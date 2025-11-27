@@ -130,17 +130,14 @@ export function QuizPanel({ questions, passPoints, onClose }: { questions: Quest
       }
 
       {panelState == PanelState.Review &&
-        <div>
-          <p>{answers[0].choice}</p>
-          <QuestionDetails
-            currentQuestion={currentQuestion}
-            isLastQuestion={isLastQuestion}
-            status={{ isReview: true, answers: answers }}
-            onClose={onClose}
-            onBack={onBack}
-            nextQuestion={nextQuestion}
-          />
-        </div>
+        <QuestionDetails
+          currentQuestion={currentQuestion}
+          isLastQuestion={isLastQuestion}
+          status={{ isReview: true, answers: answers }}
+          onClose={onClose}
+          onBack={onBack}
+          nextQuestion={nextQuestion}
+        />
       }
 
     </div>
@@ -234,9 +231,9 @@ function QuestionDetails({
 function Choices({ choice, status, onChoiceClick }: { choice: Choice, status: ChoiceStatus, onChoiceClick: () => void }) {
   return (
     <button
-      className={clsx("border border-solid p-8 w-full", {
-        "border border-solid p-8 border-green-500 text-green-500 w-full": status.isReview && status.isCorrect,
-        "border border-solid p-8 border-red-500 text-red-500 w-full": status.isReview && !status.isCorrect && status.isUserAnswer,
+      className={clsx("border border-solid p-8", {
+        "border border-solid p-8 border-green-500 text-green-500": status.isReview && status.isCorrect,
+        "border border-solid p-8 border-red-500 text-red-500": status.isReview && !status.isCorrect && status.isUserAnswer,
       })}
       onClick={onChoiceClick}
     >
