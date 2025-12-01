@@ -7,6 +7,9 @@ import Avatar from "../ui/dashboard/avatar";
 import { ProfileInfo } from "../lib/definition";
 import { useEffect, useState } from "react";
 import { UserProvider } from "../context/userContext";
+import { PageDirectory } from "../ui/page-directory";
+import { usePathname } from "next/navigation";
+import { getQuizNameFromPath } from "../lib/quiz-utils";
 
 export default function RootLayout({
   children,
@@ -22,6 +25,9 @@ export default function RootLayout({
     correctAnswers: 0
   });
 
+  const [quizName, setQuizName] = useState<string>();
+  const pathname = usePathname();
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await fetch('/api/user');
@@ -36,7 +42,16 @@ export default function RootLayout({
       }
     }
 
-    fetchUser();
+    const fetchData = async () => {
+      const [user, quizName] = await Promise.all([
+        fetchUser(),
+        getQuizNameFromPath(pathname)
+      ])
+
+      if (quizName) setQuizName(quizName);
+    }
+
+    fetchData();
   }, []);
 
   return (
@@ -48,7 +63,7 @@ export default function RootLayout({
             <SearchBar placeholder="Search Quiz" />
             <Avatar profile={profile} />
           </header>
-
+          <PageDirectory quizName={quizName} />
           <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
         </div>
       </div>
