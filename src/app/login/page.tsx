@@ -1,13 +1,13 @@
 'use client';
 
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useActionState, useState } from "react";
+import { useFormik } from "formik";
+import { useState } from "react";
 import { LoginInfo } from "../lib/definition";
 import * as Yup from 'yup';
 import useLoginSubmit from "../hooks/useSubmit";
 import { poppins } from "../ui/font";
 import Image from "next/image";
+import { Spinner } from '@heroui/react';
 
 export default function Page() {
   const { isLoading, response, submit } = useLoginSubmit();
@@ -29,17 +29,17 @@ export default function Page() {
   const togglePasswordVisibility = () => setPasswordVisible(prev => !prev);
 
   return (
-    <div className={`${poppins.className} flex md:flex-row h-screen`}>
-      <div className="flex md:flex-col gap-8 items-center justify-center relative overflow-hidden h-screen md:w-1/2">
+    <div className={`${poppins.className} flex flex-col md:flex-row h-screen`}>
+      <div className="md:flex md:flex-col gap-8 items-center justify-center relative h-screen md:w-1/2 mb-12 md:mb-0">
         <Image
           src='/quizora-white.png'
           alt={"Quizora Logo"}
           width={435}
           height={89}
-          className="relative z-10 w-32 sm:w-48 md:w-64 lg:w-80 h-auto"
+          className="invisible md:visible z-10 w-32 md:w-full lg:w-80 h-auto"
         />
-        <div className="absolute inset-0 bg-cover bg-center bg-[url('/login-bg.png')] blur-md scale-110"></div>
-        <div className="absolute inset-0 bg-[var(--theme-blue)]/50"></div>
+        <div className="absolute inset-0 bg-cover bg-center bg-[url('/login-bg.png')] blur-md scale-100"></div>
+        <div className="absolute inset-0 bg-[var(--theme-blue)]/50 scale-y-110 md:scale-100"></div>
         <p className={`text-base text-white text-center md:text-3xl relative z-10 p-6`}>
           Used this info to try it yourself!<br /><br />
           <b>Email:</b> lunaDuck@gmail.com<br />
@@ -53,14 +53,14 @@ export default function Page() {
           alt="quizola logo"
           width={435}
           height={89}
-          className="w-48 md:w-36 h-auto absolute top-18 left-29"
+          className="w-48 h-auto md:w-36 md:absolute md:top-18 md:left-29"
         />
 
-        <div className="flex flex-col w-106">
-          <h1 className={`text-[var(--theme-blue)] font-bold text-3xl`}>Login to your Account</h1>
+        <div className="flex flex-col items-center md:w-106">
+          <h1 className={`text-[var(--theme-blue)] font-bold text-2xl md:text-3xl`}>Login to your Account</h1>
           <h2 className={`text-[var(--theme-blue)] text-lg`}>with your registered Email Address</h2><br /><br />
-          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
-            <span className="flex flex-col gap-3">
+          <form onSubmit={formik.handleSubmit} className="flex flex-col items-center pb-8 md:pb-0 gap-5">
+            <div className="flex flex-col gap-3 w-76 md:w-full">
               <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Email address*</label>
               <input
                 id="email"
@@ -68,14 +68,14 @@ export default function Page() {
                 {...formik.getFieldProps("email")}
                 value={formik.values.email}
                 placeholder="Enter email address"
-                className="h-16 w-106 pl-8 text-sm text-[var(--theme-blue)] font-semibold shadow-xl rounded-lg"
+                className="h-16 pl-8 text-sm text-[var(--theme-blue)] font-semibold shadow-xl rounded-lg"
               />
               {formik.errors.email && formik.touched.email ? <div className="text-[var(--theme-red)]">{formik.errors.email}</div> : null}
-            </span>
+            </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 w-76 md:w-106">
               <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Enter password*</label>
-              <span className="w-full relative">
+              <span className="relative">
                 <input
                   id="password"
                   type={isPasswordVisible ? "text" : "password"}
@@ -86,7 +86,8 @@ export default function Page() {
                 />
                 <button
                   onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 end-9 flex items-center text-xs"
+                  type="button"
+                  className="absolute inset-y-0 end-9 z-20 flex items-center text-xs"
                 >
                   {isPasswordVisible ? "Hide" : "Show"}
                 </button>
@@ -94,14 +95,14 @@ export default function Page() {
               {formik.errors.password && formik.touched.password ? <div className="text-[var(--theme-red)]">{formik.errors.password}</div> : null}
             </div>
             {response.type === 'error' ? <div className="text-[var(--theme-red)]">{response.message}</div> : null}<br /><br />
-
             <button
               type="submit"
-              className="bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4"
-            >Login</button>
+              className="w-full flex items-center justify-center bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4"
+            >
+              {isLoading ? <Spinner size="lg" className="text-white" /> : "Login"}
+            </button>
           </form>
         </div>
-
       </div>
 
     </div >
