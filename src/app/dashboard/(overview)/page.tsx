@@ -43,12 +43,14 @@ export default function Page() {
             <Profile profile={user} />
         }
 
-        <h1 className={`${poppins.className} text-[var(--theme-blue)] font-bold text-base md:text-2xl `}>Featured Quizes</h1>
-        {
-          quizes === null ?
-            <div>Loading...</div> :
-            <Quizes quizes={quizes!} />
-        }
+        <div className="flex flex-col gap-4">
+          <h1 className={`${poppins.className} text-[var(--theme-blue)] font-bold text-base md:text-2xl`}>Featured Quizes</h1>
+          {
+            quizes === null ?
+              <div>Loading...</div> :
+              <Quizes quizes={quizes!} />
+          }
+        </div>
       </main>
     </div>
   );
