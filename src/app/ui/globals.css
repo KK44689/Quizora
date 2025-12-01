@@ -5,6 +5,7 @@
   --foreground: #171717;
   --theme-blue: #1935CA;
   --theme-grey: #696F79;
+  --theme-red: #B42424;
 }
 
 @theme inline {

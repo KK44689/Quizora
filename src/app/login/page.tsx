@@ -11,6 +11,7 @@ import Image from "next/image";
 
 export default function Page() {
   const { isLoading, response, submit } = useLoginSubmit();
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -24,6 +25,8 @@ export default function Page() {
         password: Yup.string().min(6, "Must be at least 6 characters").required("Password is required.")
       })
   });
+
+  const togglePasswordVisibility = () => setPasswordVisible(prev => !prev);
 
   return (
     <div className={`${poppins.className} flex md:flex-row h-screen`}>
@@ -61,30 +64,36 @@ export default function Page() {
               <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Email address*</label>
               <input
                 id="email"
-                name="email"
                 type="email"
-                onChange={formik.handleChange}
+                {...formik.getFieldProps("email")}
                 value={formik.values.email}
                 placeholder="Enter email address"
                 className="h-16 w-106 pl-8 text-sm text-[var(--theme-blue)] font-semibold shadow-xl rounded-lg"
               />
-              {formik.errors.email && formik.touched.email ? <div>{formik.errors.email}</div> : null}
+              {formik.errors.email && formik.touched.email ? <div className="text-[var(--theme-red)]">{formik.errors.email}</div> : null}
             </span>
 
-            <span className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
               <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Enter password*</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                placeholder="Password"
-                className="h-16 pl-8 text-sm text-[var(--theme-blue)] font-semibold shadow-xl rounded-lg"
-              />
-              {formik.errors.password && formik.touched.password ? <div>{formik.errors.password}</div> : null}
-            </span>
-            {response.type === 'error' ? <div>{response.message}</div> : null}<br /><br />
+              <span className="w-full relative">
+                <input
+                  id="password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  {...formik.getFieldProps("password")}
+                  value={formik.values.password}
+                  placeholder="Password"
+                  className="w-full h-16 pl-8 text-sm text-[var(--theme-blue)] font-semibold shadow-xl rounded-lg"
+                />
+                <button
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 end-9 flex items-center text-xs"
+                >
+                  {isPasswordVisible ? "Hide" : "Show"}
+                </button>
+              </span>
+              {formik.errors.password && formik.touched.password ? <div className="text-[var(--theme-red)]">{formik.errors.password}</div> : null}
+            </div>
+            {response.type === 'error' ? <div className="text-[var(--theme-red)]">{response.message}</div> : null}<br /><br />
 
             <button
               type="submit"
