@@ -1,3 +1,4 @@
+// import { headers } from "next/headers";
 import { QuizHistoryItem, QuizInfo } from "./definition";
 
 export const fetchQuizes = async () => {
@@ -39,6 +40,24 @@ export const fetchQuizById = async (id: string) => {
     const data = await res.json();
 
     return data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export const fetchQuizByQuery = async (query: string) => {
+  try {
+    // const host = (await headers()).get("host");
+    // const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    // const baseUrl = `${protocol}://${host}`;
+    const baseUrl = `http://localhost:3000`;
+
+    const quizes = await fetch(`${baseUrl}/api/quiz`);
+    const result = await quizes.json();
+    console.log(result);
+    const filteredResult: QuizInfo[] = result.filter((quiz: QuizInfo) => quiz.name.toLowerCase().includes(query) || quiz.description.toLowerCase().includes(query));
+    return filteredResult;
   } catch (err) {
     console.error(err);
   }
