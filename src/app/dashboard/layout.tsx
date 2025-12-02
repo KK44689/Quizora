@@ -14,7 +14,7 @@ export default async function RootLayout({
     <UserProvider>
       <div className="flex">
         <SideNav />
-        <div className="flex flex-col flex-1 min-h-screen">
+        <div className="flex flex-col flex-1 min-h-screen ml-16 md:ml-64">
           <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
             <SearchBar placeholder="Search Quiz" />
             <Avatar />
