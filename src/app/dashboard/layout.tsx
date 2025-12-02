@@ -12,15 +12,15 @@ export default async function RootLayout({
 }>) {
   return (
     <UserProvider>
-      <div className="flex min-h-screen">
+      <div className="flex">
         <SideNav />
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 min-h-screen">
           <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
             <SearchBar placeholder="Search Quiz" />
             <Avatar />
           </header>
           <Breadcrumb />
-          <main className="p-6 md:p-8 shadow-xl mr-4 md:mr-8 h-fit rounded-lg">{children}</main>
+          <main className="flex flex-1 p-6 md:p-8 shadow-xl mr-4 md:mr-8 md:mb-4 h-fit rounded-lg">{children}</main>
         </div>
       </div>
     </UserProvider>

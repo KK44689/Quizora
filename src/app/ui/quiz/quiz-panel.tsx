@@ -6,6 +6,8 @@ import { useUser } from "@/app/context/userContext";
 import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
 import { postQuizHistory } from "@/app/lib/quizes";
 import clsx from "clsx";
+import { poppins } from "../font";
+import { XMarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 // Define Panel States
 const PanelState = {
@@ -28,16 +30,16 @@ export function QuizPanel({
 }) {
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
-  const [isLastQuestion, setIsLastQuestion] = useState(false);
+  // const [isLastQuestion, setIsLastQuestion] = useState(false);
 
   const [panelState, setPanelState] = useState(PanelState.Quiz);
   const router = useRouter();
   const pathname = usePathname();
 
+  const isLastQuestion = currentQuestion.id === questions.length;
+
   const nextQuestion = () => {
     if (currentQuestion.id === questions.length) {
-      setIsLastQuestion(true);
-      console.log(answers.map(answer => answer.choice));
       return;
     }
 
@@ -63,7 +65,6 @@ export function QuizPanel({
     } else {
       setAnswers(prev => [...prev, { id: currentQuestion.id, choice: choiceId, isCorrect: currentQuestion.answer === choiceId }]);
     }
-    nextQuestion();
   }
 
   const onBack = () => {
@@ -177,36 +178,35 @@ function QuestionDetails({
   nextQuestion: () => void
 }) {
   return (
-    <div className="bg-white rounded-lg p-10 w-full max-w-2xl h-155 shadow-lg relative">
-      <button
-        className="absolute top-4 right-4 text-xl"
-        onClick={onClose}
-      >
-        X
-      </button>
+    <div className={`${poppins.className} text-[#4A4A4A] flex flex-col gap-5 bg-white rounded-3xl p-10 w-full max-w-2xl h-fit shadow-lg relative`}>
+      <div className="flex flex-col items-center justify-center gap-5">
+        <button
+          className="flex items-center justify-center absolute -top-4 -right-4 bg-[#FBF9F9] w-10 h-10 rounded-full"
+          onClick={onClose}
+        >
+          <XMarkIcon className="w-4 h-4" />
+        </button>
 
-      <h1>Question {currentQuestion.id}</h1><br />
+        {
+          currentQuestion.id !== 1 &&
+          (
+            <button
+              className="flex items-center absolute top-8 left-10 justify-center bg-[#FBF9F9] w-10 h-10 rounded-full"
+              onClick={onBack}
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+            </button>
+          )
+        }
 
-      {
-        currentQuestion.id !== 1 &&
-        (
-          <button
-            className="absolute top-4 left-4"
-            onClick={onBack}
-          >
-            back
-          </button>
-        )
-      }
-
-      <p>{currentQuestion.question}</p>
-      {
-        currentQuestion.choices.map((choice) => (
-          <div
-            className="flex flex-col gap-8"
-            key={choice.id}
-          >
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="font-semibold text-2xl">Question {currentQuestion.id}</h1><br />
+          <p className="text-base">{currentQuestion.question}</p>
+        </div>
+        {
+          currentQuestion.choices.map((choice) => (
             <Choices
+              key={choice.id}
               choice={choice}
               status={{
                 isReview: status.isReview,
@@ -215,28 +215,33 @@ function QuestionDetails({
               }}
               onChoiceClick={() => { if (onAnswer) onAnswer(choice.id) }}
             />
-          </div>))
-      }
+          ))
+        }
+      </div>
 
-      {isLastQuestion && !status.isReview && (
-        <button
-          className="bg-[var(--theme-blue)] text-white"
-          onClick={() => { if (onSubmit) onSubmit() }}
-        >
-          Submit
-        </button>
-      )}
+      <div className="flex justify-end">
+        {
+          isLastQuestion && !status.isReview && (
+            <button
+              className="px-6 py-2 h-16 w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
+              onClick={() => { if (onSubmit) onSubmit() }}
+            >
+              Submit
+            </button>
+          )
+        }
 
-      {
-        status.isReview && (
-          <button
-            className="bg-[var(--theme-blue)] text-white"
-            onClick={nextQuestion}
-          >
-            Next
-          </button>
-        )
-      }
+        {
+          !isLastQuestion && (
+            <button
+              className="px-6 py-2 h-16 w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
+              onClick={nextQuestion}
+            >
+              Next
+            </button>
+          )
+        }
+      </div>
     </div>
   );
 }
@@ -244,9 +249,11 @@ function QuestionDetails({
 function Choices({ choice, status, onChoiceClick }: { choice: Choice, status: ChoiceStatus, onChoiceClick: () => void }) {
   return (
     <button
-      className={clsx("border border-solid p-8", {
-        "border border-solid p-8 border-green-500 text-green-500": status.isReview && status.isCorrect,
-        "border border-solid p-8 border-red-500 text-red-500": status.isReview && !status.isCorrect && status.isUserAnswer,
+      className={clsx("flex items-center w-full border border-solid border-[0.5px] p-8 h-20 bg-[#FBF9F9] rounded-xl text-base hover:bg-[var(--theme-blue)] hover:text-white", {
+        "border-green-500 text-green-500": status.isReview && status.isCorrect,
+        "border-red-500 text-red-500": status.isReview && !status.isCorrect && status.isUserAnswer,
+        "border-[var(--theme-blue)]": !status.isReview,
+        "bg-[var(--theme-blue)] text-white": !status.isReview && status.isUserAnswer,
       })}
       onClick={onChoiceClick}
     >

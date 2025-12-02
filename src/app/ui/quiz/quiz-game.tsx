@@ -2,6 +2,7 @@ import { Question, QuizInfo } from "@/app/lib/definition";
 import Image from 'next/image';
 import { QuizPanel } from "./quiz-panel";
 import { useState } from "react";
+import { poppins } from "../font";
 
 export function Quiz({
   quiz,
@@ -18,26 +19,36 @@ export function Quiz({
   const [questions, setQuestions] = useState<Question[]>([]);
 
   return (
-    <div className="flex md:flex-row gap-8">
-      <div className="w-full">
-        <h1>{quiz.name}</h1>
-        <Image
-          src={quiz.image ?? null}
-          width={903}
-          height={487}
-          alt="Quiz Image"
-        />
-        <p>{quiz.description}</p>
+    <div className={`${poppins.className} flex flex-col md:flex-row gap-8`}>
+      <div className="flex flex-col gap-8">
+        <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">{quiz.name}</h1>
+        <div className="flex flex-col gap-8 md:ml-40">
+          <Image
+            src={quiz.image ?? null}
+            width={903}
+            height={487}
+            alt="Quiz Image"
+            className="w-full h-64 md:h-120 object-cover rounded-lg"
+          />
+          <p className="text-base text-center md:text-left">{quiz.description}</p>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-6 text-left md:w-full md:items-center md:justify-center">
-        <p className="text-left">
-          Submitted Date: {submittedDate ?? "-"} <br />
-          Your Highscore: {highscore === null ? "-" : highscore * 10} <br />
-          Pass Points: {quiz.passPoint * 10} <br />
-        </p>
+      <div className="flex flex-col gap-12 text-left md:w-full md:items-center md:justify-center">
+        <div className="flex gap-8 text-left text-[var(--theme-grey)]">
+          <div className="flex flex-col gap-16 font-bold text-sm md:text-xl">
+            <p>Submitted Date:</p>
+            <p>Your Highscore:</p>
+            <p>Pass Points:</p>
+          </div>
+          <div className="flex flex-col gap-16 text-sm md:text-xl">
+            <p>{submittedDate ?? "-"}</p>
+            <p>{highscore === null ? "-" : highscore * 10}</p>
+            <p>{quiz.passPoint * 10} </p>
+          </div>
+        </div>
         <button
-          className={`w-1/4 bg-[var(--theme-blue)] text-white`}
+          className={`w-full h-16 md:w-52 rounded-xl bg-[var(--theme-blue)] text-white`}
           onClick={() => {
             setShowPanel(true);
             setQuestions(quiz.questions);

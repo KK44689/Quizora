@@ -39,7 +39,7 @@ export function Breadcrumb() {
               path = quizName;
             }
             console.log(path);
-            return <h1 key={path} className="capitalize md:text-xl text-[#C4C4C4]">{index === 0 ? "" : "/"} {path}&nbsp;</h1>
+            return <h1 key={path} className="capitalize text-xs md:text-xl text-[#C4C4C4]">{index === 0 ? "" : "/"} {path}&nbsp;</h1>
           })
       }
     </div>
