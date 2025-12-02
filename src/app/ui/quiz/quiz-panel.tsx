@@ -30,9 +30,8 @@ export function QuizPanel({
 }) {
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
-  // const [isLastQuestion, setIsLastQuestion] = useState(false);
-
   const [panelState, setPanelState] = useState(PanelState.Quiz);
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -178,23 +177,23 @@ function QuestionDetails({
   nextQuestion: () => void
 }) {
   return (
-    <div className={`${poppins.className} text-[#4A4A4A] flex flex-col gap-5 bg-white rounded-3xl p-10 w-full max-w-2xl h-fit shadow-lg relative`}>
+    <div className={`${poppins.className} text-[#4A4A4A] flex flex-col gap-5 bg-white md:rounded-3xl p-10 w-full max-w-2xl h-screen md:h-fit shadow-lg relative`}>
       <div className="flex flex-col items-center justify-center gap-5">
         <button
-          className="flex items-center justify-center absolute -top-4 -right-4 bg-[#FBF9F9] w-10 h-10 rounded-full"
+          className="flex items-center justify-center absolute top-4 right-4 md:-top-4 md:-right-4 bg-[#FBF9F9] w-10 h-10 rounded-full"
           onClick={onClose}
         >
-          <XMarkIcon className="w-4 h-4" />
+          <XMarkIcon className="w-8 h-8 md:w-4 md:h-4" />
         </button>
 
         {
           currentQuestion.id !== 1 &&
           (
             <button
-              className="flex items-center absolute top-8 left-10 justify-center bg-[#FBF9F9] w-10 h-10 rounded-full"
+              className="flex items-center absolute top-4 left-4 md:top-8 md:left-10 justify-center bg-[#FBF9F9] w-10 h-10 rounded-full"
               onClick={onBack}
             >
-              <ChevronLeftIcon className="w-4 h-4" />
+              <ChevronLeftIcon className="w-8 h-8 md:w-4 md:h-4" />
             </button>
           )
         }
@@ -223,7 +222,7 @@ function QuestionDetails({
         {
           isLastQuestion && !status.isReview && (
             <button
-              className="px-6 py-2 h-16 w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
+              className="px-6 py-2 h-16 w-full md:w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
               onClick={() => { if (onSubmit) onSubmit() }}
             >
               Submit
@@ -234,7 +233,7 @@ function QuestionDetails({
         {
           !isLastQuestion && (
             <button
-              className="px-6 py-2 h-16 w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
+              className="px-6 py-2 h-16 w-full md:w-33 bg-[var(--theme-blue)] text-white text-xl font-normal rounded-lg"
               onClick={nextQuestion}
             >
               Next
