@@ -21,7 +21,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
     }
 
     replace(`${pathname}?${params.toString()}`);
-    redirect(`${pathname}/search-result?${params.toString()}`);
+    redirect(`/dashboard/search-result?${params.toString()}`);
   }
 
   return (
