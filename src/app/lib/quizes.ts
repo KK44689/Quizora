@@ -1,9 +1,24 @@
-// import { headers } from "next/headers";
-import { QuizHistoryItem, QuizInfo } from "./definition";
+import { QuizHistoryItem, QuizInfo, UserResults } from "./definition";
+
+function getBaseUrl() {
+  if (typeof window !== "undefined") {
+    // Client side
+    return window.location.origin;
+  }
+
+  // Server side
+  const host = process.env.VERCEL_URL;
+  if (host) return `https://${host}`;
+
+  // Local dev
+  return `http://localhost:3000`;
+}
+
+const baseUrl = getBaseUrl();
 
 export const fetchQuizes = async () => {
   try {
-    const res = await fetch('/api/quiz');
+    const res = await fetch(`${baseUrl}/api/quiz`);
     const data = await res.json();
 
     return data;
@@ -51,7 +66,6 @@ export const fetchQuizByQuery = async (query: string) => {
     // const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     // const baseUrl = `${protocol}://${host}`;
-    const baseUrl = `http://localhost:3000`;
 
     const quizes = await fetch(`${baseUrl}/api/quiz`);
     const result = await quizes.json();
@@ -92,30 +106,25 @@ export const fetchUserQuizHistory = async (userId: string) => {
     const quizHistoryId = quizHistory.quizHistory.map((history: QuizHistoryItem) => history.quizId);
     const filteredQuiz: QuizInfo[] = quizes.filter((quiz: QuizInfo) => quizHistoryId.includes(quiz._id));
 
-    if (filteredQuiz) return filteredQuiz;
+    return filteredQuiz;
   } catch (err) {
     console.error(err);
+    return [];
   }
 }
 
 export const fetchUserQuizData = async (userId: string) => {
   try {
-    const [quizHistoryRes] = await Promise.all([
-      fetch(`/api/quiz-history/${userId}`),
-    ]);
+    const quizHistory = await fetch(`${baseUrl}/api/quiz-history/${userId}`).then(res => res.json());
 
-    const [quizHistory] = await Promise.all([
-      quizHistoryRes.json(),
-    ])
+    let quizResult: UserResults = { quizPassed: 0, correctAnswers: 0 };
 
-    let quizPassed = 0;
-    let correctAnswers = 0;
     quizHistory.quizHistory.forEach((history: QuizHistoryItem) => {
-      if (history.quizStatus) quizPassed += 1;
-      correctAnswers += history.score;
+      if (history.quizStatus) quizResult.quizPassed += 1;
+      quizResult.correctAnswers += history.score;
     });
 
-    return { quizPassed: quizPassed, correctAnswers: correctAnswers };
+    return quizResult;
   } catch (err) {
     console.error(err);
   }

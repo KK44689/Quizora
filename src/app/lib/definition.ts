@@ -3,6 +3,9 @@ export interface ProfileInfo {
   firstName: string;
   lastName: string;
   image: string;
+}
+
+export interface UserResults {
   quizPassed: number;
   correctAnswers: number;
 }

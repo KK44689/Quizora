@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { poppins } from "../font";
-import { useUser } from "@/app/context/userContext";
+import { ProfileInfo } from "@/app/lib/definition";
+// import { useUser } from "@/app/context/userContext";
 
-export default function Avatar() {
-  const { user, setUser } = useUser();
+export default function Avatar({ user }: { user: ProfileInfo }) {
+  // const { user, setUser } = useUser();
 
   return (
     <div >

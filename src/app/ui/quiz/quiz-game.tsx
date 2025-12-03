@@ -1,19 +1,23 @@
-import { Question, QuizInfo } from "@/app/lib/definition";
+'use client';
+
+import { ProfileInfo, Question, QuizInfo } from "@/app/lib/definition";
 import Image from 'next/image';
 import { QuizPanel } from "./quiz-panel";
-import { useState } from "react";
+import { use, useState } from "react";
 import { poppins } from "../font";
 
 export function Quiz({
+  user,
   quiz,
   submittedDate,
   highscore,
-  onRefresh
+  onRefresh,
 }: {
+  user: ProfileInfo
   quiz: QuizInfo,
   submittedDate: string | null,
   highscore: number | null,
-  onRefresh: () => void
+  onRefresh: Promise<void>,
 }) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -58,11 +62,12 @@ export function Quiz({
         </button>
         {showPanel &&
           <QuizPanel
+            user={user}
             questions={questions}
             passPoints={quiz.passPoint}
             onClose={() => {
               setShowPanel(false)
-              onRefresh();
+              use(onRefresh);
             }}
           />
         }

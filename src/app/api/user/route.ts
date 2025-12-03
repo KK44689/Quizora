@@ -10,7 +10,6 @@ export async function GET(
   try {
     const token = req.cookies.get('session')?.value;
     const payload = token ? await verifyJwt(token) : null;
-
     if (!payload) {
       return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
     }

@@ -18,16 +18,16 @@ export function Breadcrumb() {
     return true;
   }
 
-  useEffect(() => {
-    const loadQuizName = async () => {
-      if (isQuizId) {
-        const quiz = await fetchQuizById(last);
-        if (quiz) setQuizName(quiz.name);
-      }
-    };
+  // useEffect(() => {
+  //   const loadQuizName = async () => {
+  //     if (isQuizId) {
+  //       const quiz = await fetchQuizById(last);
+  //       if (quiz) setQuizName(quiz.name);
+  //     }
+  //   };
 
-    loadQuizName();
-  }, [isQuizId, last]);
+  //   loadQuizName();
+  // }, [isQuizId, last]);
 
   return (
     <div className={`${poppins.className} flex flex-row`}>

@@ -1,11 +1,14 @@
-'use client'
-
 import { QuizInfo } from "@/app/lib/definition";
 import { poppins } from "../font";
 import Image from "next/image";
 import Link from "next/link";
+import { use } from "react";
 
-export default function Quizes({ quizes }: { quizes: QuizInfo[] }) {
+export default function Quizes({ quizesPromise }: { quizesPromise: Promise<QuizInfo[]> }) {
+  const quizes = use(quizesPromise);
+
+  if(quizes.length === 0) return <h1>No history data.</h1>
+
   return (
     <div className={`flex flex-col gap-6`}>
       <div className="flex flex-col md:grid md:grid-cols-3 gap-8 ">

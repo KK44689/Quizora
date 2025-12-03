@@ -1,13 +1,16 @@
-import { Choice, ChoiceStatus, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
+import { Choice, ChoiceStatus, ProfileInfo, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
 import { useState } from "react";
 import { QuizConfirmPanel } from "./quiz-confirm-panel";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useUser } from "@/app/context/userContext";
+// import { useUser } from "@/app/context/userContext";
 import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
-import { postQuizHistory } from "@/app/lib/quizes";
+// import { postQuizHistory } from "@/app/lib/quizes";
 import clsx from "clsx";
 import { poppins } from "../font";
 import { XMarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { use } from 'react';
+import { postQuizHistory } from "@/app/lib/quizes";
+// import { fetchCurrentUser } from "@/app/lib/users";
 
 // Define Panel States
 const PanelState = {
@@ -20,10 +23,12 @@ const PanelState = {
 type PanelState = typeof PanelState[keyof typeof PanelState];
 
 export function QuizPanel({
+  user,
   questions,
   passPoints,
   onClose
 }: {
+  user: ProfileInfo,
   questions: Question[],
   passPoints: number,
   onClose: () => void
@@ -104,7 +109,7 @@ export function QuizPanel({
   }, 0);
 
   const { id } = useParams() as { id: string };
-  const { user, setUser } = useUser();
+  // const { user, setUser } = useUser();
 
   const quizResult: QuizHistoryItem = {
     quizId: id,
