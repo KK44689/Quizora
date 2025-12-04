@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
 
-export default function Quizes({ quizesPromise }: { quizesPromise: Promise<QuizInfo[]> }) {
+export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: Promise<QuizInfo[]>, noDataText: string }) {
   const quizes = use(quizesPromise);
 
-  if(quizes.length === 0) return <h1>No history data.</h1>
+  if (quizes.length === 0) return <h1>{noDataText}</h1>
 
   return (
     <div className={`flex flex-col gap-6`}>

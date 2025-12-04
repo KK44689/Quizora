@@ -74,6 +74,7 @@ export const fetchQuizByQuery = async (query: string) => {
     return filteredResult;
   } catch (err) {
     console.error(err);
+    return [];
   }
 }
 

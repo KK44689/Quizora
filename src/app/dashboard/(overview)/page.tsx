@@ -49,7 +49,7 @@ export default async function Page() {
         <div className="flex flex-col gap-4">
           <h1 className={`${poppins.className} text-[var(--theme-blue)] font-bold text-base md:text-2xl`}>Featured Quizes</h1>
           <Suspense fallback={Loading()}>
-            <Quizes quizesPromise={quizes} />
+            <Quizes quizesPromise={quizes} noDataText="No quiz found."/>
           </Suspense>
         </div>
       </main>
