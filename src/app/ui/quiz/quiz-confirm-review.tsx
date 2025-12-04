@@ -1,4 +1,3 @@
-// import { useRouter } from "next/navigation";
 import QuizPassedIcon from "@/app/assets/icons/passed-icon.svg";
 import QuizRetryIcon from "@/app/assets/icons/retry-icon.svg";
 import { poppins } from "../font";
@@ -13,11 +12,8 @@ export function QuizConfirmReviewPanel({
   isPassed: boolean,
   onReview: () => void,
 }) {
-  // const router = useRouter();
-
   const onBack = () => {
     redirect('/dashboard');
-    // router.push('/dashboard');
   }
 
   return (

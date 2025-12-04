@@ -3,11 +3,8 @@
 import Image from "next/image";
 import { poppins } from "../font";
 import { ProfileInfo } from "@/app/lib/definition";
-// import { useUser } from "@/app/context/userContext";
 
 export default function Avatar({ user }: { user: ProfileInfo }) {
-  // const { user, setUser } = useUser();
-
   return (
     <div >
       {user == null ? <h1>Loading...</h1> : (

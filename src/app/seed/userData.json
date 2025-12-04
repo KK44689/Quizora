@@ -1,103 +1,14 @@
 {
   "docs": [
     {
+      "email": "lunaDuck@gmail.com",
       "firstName": "Luna",
       "lastName": "Duck",
-      "image": "/profile-pic.png",
-      "quizPassed": 1,
-      "correctAnswers": 14,
-      "quizHistory": [
-        {
-          "id": "691ad7589b70a384b021e9a0",
-          "answers": [
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 2,
-              "isCorrect": true
-            },
-            {
-              "choice": 2,
-              "isCorrect": true
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 3,
-              "isCorrect": true
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 4,
-              "isCorrect": false
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 3,
-              "isCorrect": true
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            }
-          ]
-        },
-        {
-          "id": "691ad7589b70a384b021e9a2",
-          "answers": [
-            {
-              "choice": 1,
-              "isCorrect": false
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 4,
-              "isCorrect": false
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 3,
-              "isCorrect": false
-            },
-            {
-              "choice": 1,
-              "isCorrect": true
-            },
-            {
-              "choice": 2,
-              "isCorrect": false
-            },
-            {
-              "choice": 2,
-              "isCorrect": true
-            },
-            {
-              "choice": 4,
-              "isCorrect": false
-            },
-            {
-              "choice": 2,
-              "isCorrect": true
-            }
-          ]
-        }
-      ]
+      "image": "https://drive.usercontent.google.com/download?id=1O13fCkVsKNo7ujIkbvr1BOGYUETgPncS",
+      "password": "$2b$10$.BvrF3q5V5FXaoz1yGuft.19DWIX7rQzfqF7NiOnUCID5yTC81FHK",
+      "createdAt": {
+        "$date": "2025-11-18T10:42:32.798Z"
+      }
     }
   ]
 }

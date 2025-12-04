@@ -12,16 +12,10 @@ export function Quiz({
   user,
   quizPromise,
   quizHistoryPromise
-  // submittedDate,
-  // highscore,
-  // onRefresh,
 }: {
   user: ProfileInfo
   quizPromise: Promise<QuizInfo>,
   quizHistoryPromise: Promise<QuizHistoryItem[]>,
-  // submittedDate: string | null,
-  // highscore: number | null,
-  // onRefresh: Promise<void>,
 }) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);

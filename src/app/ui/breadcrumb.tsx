@@ -2,9 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { poppins } from "./font";
-import { useEffect, useState } from "react";
-// import { fetchQuizById } from "../lib/quizes";
-import { QuizBreadcrumb } from "../lib/definition";
 
 export function Breadcrumb({ quizName }: { quizName?: string }) {
   const pathname = usePathname();
@@ -13,23 +10,10 @@ export function Breadcrumb({ quizName }: { quizName?: string }) {
   const last = allPath[allPath.length - 1];
   const isQuizId = /^[a-f\d]{24}$/i.test(last);
 
-  // const [quizName, setQuizName] = useState();
-
   const isShow = (allPath: string[]): boolean => {
     if (allPath.includes("dashboard") && allPath.length === 1) return false;
     return true;
   }
-
-  // useEffect(() => {
-  //   const loadQuizName = async () => {
-  //     if (isQuizId) {
-  //       const quiz = await fetchQuizById(last);
-  //       if (quiz) setQuizName(quiz.name);
-  //     }
-  //   };
-
-  //   loadQuizName();
-  // }, [isQuizId, last]);
 
   return (
     <div className={`${poppins.className} flex flex-row`}>

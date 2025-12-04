@@ -2,14 +2,11 @@ import { Choice, ChoiceStatus, ProfileInfo, Question, QuizHistoryItem, UserQuizA
 import { useState } from "react";
 import { QuizConfirmPanel } from "./quiz-confirm-panel";
 import { useParams, usePathname, useRouter } from "next/navigation";
-// import { useUser } from "@/app/context/userContext";
 import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
-// import { postQuizHistory } from "@/app/lib/quizes";
 import clsx from "clsx";
 import { poppins } from "../font";
 import { XMarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useQuizSubmit } from "@/app/hooks/useSubmit";
-// import { fetchCurrentUser } from "@/app/lib/users";
 
 // Define Panel States
 const PanelState = {
@@ -37,9 +34,6 @@ export function QuizPanel({
   const [panelState, setPanelState] = useState(PanelState.Quiz);
 
   const { isLoading, response, submit } = useQuizSubmit();
-
-  const router = useRouter();
-  const pathname = usePathname();
 
   const isLastQuestion = currentQuestion.id === questions.length;
 
@@ -93,14 +87,6 @@ export function QuizPanel({
   }
 
   const onConfirm = async () => {
-    // const response = await postQuizHistory(quizResult);
-
-    // if (!response) {
-    //   console.error('Failed to post quiz result');
-    //   router.push(pathname);
-    //   return;
-    // }
-
     submit(quizResult);
     setCurrentQuestion(questions[0]);
     setPanelState(PanelState.ConfirmReview);
@@ -111,7 +97,6 @@ export function QuizPanel({
   }, 0);
 
   const { id } = useParams() as { id: string };
-  // const { user, setUser } = useUser();
 
   const quizResult: QuizHistoryItem = {
     quizId: id,

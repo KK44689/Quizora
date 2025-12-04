@@ -1,6 +1,4 @@
-import jwt from 'jsonwebtoken';
 import { jwtVerify } from 'jose';
-import { json } from 'stream/consumers';
 
 export type JwtPayload = {
   userId: string;
@@ -8,12 +6,6 @@ export type JwtPayload = {
   iat?: number;
   exp?: number;
 };
-
-// export function parseAuthCookie(cookieHeader: string | undefined): string | null {
-//   if (!cookieHeader) return null;
-//   const cookies = cookieStore.parse(cookieHeader);
-//   return cookies.authToken || null;
-// }
 
 export async function verifyJwt(token: string) {
   try {

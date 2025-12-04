@@ -1,22 +1,6 @@
 import { headers } from "next/headers";
 import { QuizHistoryItem, QuizInfo, UserResults } from "./definition";
 
-// function getBaseUrl() {
-//   if (typeof window !== "undefined") {
-//     // Client side
-//     return window.location.origin;
-//   }
-
-//   // Server side
-//   const host = process.env.VERCEL_URL;
-//   if (host) return `https://${host}`;
-
-//   // Local dev
-//   return `http://localhost:3000`;
-// }
-
-// const baseUrl = getBaseUrl();
-
 export const fetchQuizes = async () => {
   try {
     const host = (await headers()).get("host");
@@ -39,8 +23,6 @@ export const fetchQuizById = async (id: string) => {
     const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     const baseUrl = `${protocol}://${host}`;
-
-
     const res = await fetch(`${baseUrl}/api/quiz/${id}`);
     const data = await res.json();
 
@@ -57,10 +39,9 @@ export const fetchQuizByQuery = async (query: string) => {
 
     const baseUrl = `${protocol}://${host}`;
 
-
     const quizes = await fetch(`${baseUrl}/api/quiz`);
     const result = await quizes.json();
-    console.log(result);
+
     const filteredResult: QuizInfo[] = result.filter((quiz: QuizInfo) => quiz.name.toLowerCase().includes(query) || quiz.description.toLowerCase().includes(query));
     return filteredResult;
   } catch (err) {
@@ -75,7 +56,6 @@ export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) =
     const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     const baseUrl = `${protocol}://${host}`;
-
 
     const quizHistoryByUser = await fetch(`${baseUrl}/api/quiz-history/${userId}`);
     const data = await quizHistoryByUser.json();
@@ -123,7 +103,6 @@ export const fetchUserQuizData = async (userId: string) => {
     const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     const baseUrl = `${protocol}://${host}`;
-
 
     const quizHistory = await fetch(`${baseUrl}/api/quiz-history/${userId}`).then(res => res.json());
 
