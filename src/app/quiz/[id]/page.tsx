@@ -1,6 +1,7 @@
 import { fetchQuizById, fetchQuizHistoryByQuizId } from "@/app/lib/quizes";
 import { fetchCurrentUser } from "@/app/lib/users";
 import { Quiz } from "@/app/ui/quiz/quiz-game";
+import QuizInfoSkeleton from "@/app/ui/skeleton/quiz-info-skeleton";
 import { Suspense } from "react";
 
 export default async function Pages({ params }: { params: Promise<{ id: string }> }) {
@@ -12,7 +13,7 @@ export default async function Pages({ params }: { params: Promise<{ id: string }
 
   return (
     <div>
-      <Suspense fallback={<h1>Loading...</h1>}>
+      <Suspense fallback={<QuizInfoSkeleton />}>
         <Quiz
           user={user}
           quizPromise={quiz}

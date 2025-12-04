@@ -5,6 +5,7 @@ import Avatar from "../ui/dashboard/avatar";
 import { Breadcrumb } from "../ui/breadcrumb";
 import { fetchCurrentUser } from "../lib/users";
 import { Suspense } from "react";
+import AvatarSkeleton from "../ui/skeleton/avatar-skeleton";
 
 export default async function RootLayout({
   children,
@@ -19,7 +20,9 @@ export default async function RootLayout({
       <div className="flex flex-col flex-1 min-h-screen ml-16 md:ml-64">
         <header className="flex md:h-[89px] sm:h-[64px] items-center px-2 mx-4 md:px-8 py-4 bg-white">
           <SearchBar placeholder="Search Quiz" />
-          <Avatar user={user} />
+          <Suspense fallback={<AvatarSkeleton />}>
+            <Avatar user={user} />
+          </Suspense>
         </header>
         <Suspense fallback={<h1>Loading...</h1>}>
           <Breadcrumb />
