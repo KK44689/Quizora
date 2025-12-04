@@ -30,7 +30,7 @@ export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: P
 
 export function QuizCard({ info }: { info: QuizInfo }) {
   return (
-    <Link href={`/dashboard/quiz/${info._id}`}>
+    <Link href={`/quiz/${info._id}`}>
       <div className={`${poppins.className} text-white relative flex flex-1 flex-shrink-0 items-end justify-center`}>
         <Image
           src={info.image}

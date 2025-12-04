@@ -1,17 +1,23 @@
 import "@/app/ui/globals.css";
-import SearchBar from "../ui/search-bar";
-import SideNav from "../ui/dashboard/sidenav";
-import Avatar from "../ui/dashboard/avatar";
-import { Breadcrumb } from "../ui/breadcrumb";
-import { fetchCurrentUser } from "../lib/users";
+import SearchBar from "../../ui/search-bar";
+import SideNav from "../../ui/dashboard/sidenav";
+import Avatar from "../../ui/dashboard/avatar";
+import { Breadcrumb } from "../../ui/breadcrumb";
+import { fetchCurrentUser } from "../../lib/users";
 import { Suspense } from "react";
+import { fetchQuizById } from "@/app/lib/quizes";
 
 export default async function RootLayout({
   children,
+  params
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ id: string }>
 }>) {
+  const param = await params;
+  const id = param.id;
   const user = await fetchCurrentUser();
+  const quiz = await fetchQuizById(id);
 
   return (
     <div className="flex">
@@ -22,7 +28,7 @@ export default async function RootLayout({
           <Avatar user={user} />
         </header>
         <Suspense fallback={<h1>Loading...</h1>}>
-          <Breadcrumb />
+          <Breadcrumb quizName={quiz.name} />
         </Suspense>
         <main className="flex flex-1 p-6 md:p-8 shadow-xl mr-4 md:mr-8 md:mb-4 h-fit rounded-lg">{children}</main>
       </div>

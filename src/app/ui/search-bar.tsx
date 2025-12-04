@@ -1,7 +1,7 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { poppins } from '../font';
+import { poppins } from './font';
 import { useSearchParams, usePathname, useRouter, redirect } from 'next/navigation';
 import { useState } from 'react';
 

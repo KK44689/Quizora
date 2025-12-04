@@ -1,27 +1,47 @@
 'use client';
 
-import { ProfileInfo, Question, QuizInfo } from "@/app/lib/definition";
+import { ProfileInfo, Question, QuizHistoryItem, QuizInfo } from "@/app/lib/definition";
 import Image from 'next/image';
 import { QuizPanel } from "./quiz-panel";
 import { use, useState } from "react";
 import { poppins } from "../font";
+import { isoToDateFormat } from "@/app/lib/utils";
+import { useRouter } from "next/navigation";
 
 export function Quiz({
   user,
   quizPromise,
-  submittedDate,
-  highscore,
+  quizHistoryPromise
+  // submittedDate,
+  // highscore,
   // onRefresh,
 }: {
   user: ProfileInfo
   quizPromise: Promise<QuizInfo>,
-  submittedDate: string | null,
-  highscore: number | null,
+  quizHistoryPromise: Promise<QuizHistoryItem[]>,
+  // submittedDate: string | null,
+  // highscore: number | null,
   // onRefresh: Promise<void>,
 }) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const quiz = use(quizPromise);
+  const quizHistory = use(quizHistoryPromise);
+
+  const router = useRouter();
+
+  let latestDate = () => {
+    const allSubmittedDate = quizHistory.map((quiz: QuizHistoryItem) => quiz.submittedDate);
+    const date = new Date(
+      Math.max(...allSubmittedDate.map((d: string) => new Date(d).getTime()))
+    ).toString();
+    return allSubmittedDate.length === 0 ? "-" : isoToDateFormat(date);
+  };
+
+  let highscore = () => {
+    const allHighScore = quizHistory.map((quiz: QuizHistoryItem) => quiz.score);
+    return allHighScore.length === 0 ? "-" : Math.max(...allHighScore) * 10;
+  };
 
   return (
     <div className={`${poppins.className} flex flex-col md:flex-row gap-8`}>
@@ -47,8 +67,8 @@ export function Quiz({
             <p>Pass Points:</p>
           </div>
           <div className="flex flex-col gap-16 text-sm md:text-xl">
-            <p>{submittedDate ? submittedDate : "-"}</p>
-            <p>{!highscore ? "-" : highscore * 10}</p>
+            <p>{latestDate()}</p>
+            <p>{highscore()}</p>
             <p>{quiz.passPoint * 10} </p>
           </div>
         </div>
@@ -68,7 +88,7 @@ export function Quiz({
             passPoints={quiz.passPoint}
             onClose={() => {
               setShowPanel(false)
-              // use(onRefresh);
+              router.refresh();
             }}
           />
         }

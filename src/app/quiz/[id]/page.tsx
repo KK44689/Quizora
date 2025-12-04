@@ -16,20 +16,7 @@ export default async function Pages({ params }: { params: Promise<{ id: string }
   const user = await fetchCurrentUser();
 
   let quiz = fetchQuizById(id);
-  let quizHistory = await fetchQuizHistoryByQuizId(user!._id, id);
-
-  let latestDate = () => {
-    const allSubmittedDate = quizHistory.map((quiz: QuizHistoryItem) => quiz.submittedDate);
-    const date = new Date(
-      Math.max(...allSubmittedDate.map((d: string) => new Date(d).getTime()))
-    ).toString();
-    return isoToDateFormat(date);
-  };
-
-  let highscore = () => {
-    const allHighScore = quizHistory.map((quiz: QuizHistoryItem) => quiz.score);
-    return allHighScore.length === 0 ? null : Math.max(...allHighScore);
-  };
+  let quizHistory = fetchQuizHistoryByQuizId(user!._id, id);
 
   // const { user, setUser } = useUser();
   // const [quiz, setQuiz] = useState<QuizInfo | null>(null);
@@ -76,8 +63,9 @@ export default async function Pages({ params }: { params: Promise<{ id: string }
         <Quiz
           user={user}
           quizPromise={quiz}
-          submittedDate={latestDate()}
-          highscore={highscore()}
+          quizHistoryPromise={quizHistory}
+          // submittedDate={latestDate()}
+          // highscore={highscore()}
         // onRefresh={fetchAllData}
         />
       </Suspense>

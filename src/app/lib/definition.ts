@@ -61,3 +61,8 @@ export interface QuizGameplayInfo {
   currentQuestionId: number;
   quizLength: number;
 }
+
+export interface QuizBreadcrumb {
+  quizName: string;
+  isQuizId: boolean;
+}
