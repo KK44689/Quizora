@@ -22,6 +22,7 @@ export const useLoginSubmit = () => {
           type: 'success',
           message: `Thanks for your submission ${res.email}, we will get back to you shortly!.`
         });
+        
         router.push('/dashboard');
       }
     } catch (e) {

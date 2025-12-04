@@ -95,8 +95,9 @@ export function Login() {
             </div>
             {response.type === 'error' ? <div className="text-[var(--theme-red)]">{response.message}</div> : null}<br /><br />
             <button
+              disabled={isLoading ? true : false}
               type="submit"
-              className="w-full flex items-center justify-center bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4"
+              className="w-full flex items-center justify-center bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4 disabled:bg-[var(--theme-grey)]"
             >
               {isLoading ? <Spinner size="lg" className="text-white" /> : "Login"}
             </button>
