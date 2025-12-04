@@ -29,7 +29,7 @@ export default async function QuizHistory() {
     <div className={`${poppins.className} flex flex-col gap-4`}>
       <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">Quiz History</h1>
       <Suspense fallback={<h1>Loading...</h1>}>
-        <Quizes quizesPromise={quizes} noDataText="No quizhistory found."/>
+        <Quizes quizesPromise={quizes} noDataText="No quiz history found."/>
       </Suspense>
     </div>
   );

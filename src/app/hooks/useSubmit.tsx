@@ -3,7 +3,7 @@ import { handleLogin } from "../lib/auth";
 import { LoginInfo } from "../lib/definition";
 import { useRouter } from "next/navigation";
 
-const useLoginSubmit = () => {
+export const useLoginSubmit = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState({ type: "", message: "" });
   const [error, setError] = useState();
@@ -35,5 +35,3 @@ const useLoginSubmit = () => {
 
   return { isLoading, response, submit };
 };
-
-export default useLoginSubmit;

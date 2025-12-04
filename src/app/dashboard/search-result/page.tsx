@@ -19,7 +19,7 @@ export default async function Page(props: {
     <div className={`${poppins.className} flex flex-col gap-4`}>
       <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">Search Result of <span className="font-medium text-[var(--theme-grey)]">"{query}"</span></h1>
       <Suspense fallback={<h1>Loading...</h1>}>
-        <Quizes quizesPromise={quizes} noDataText={`No result for ${query}`} />
+        <Quizes quizesPromise={quizes} noDataText={`No result for "${query}"`} />
       </Suspense>
     </div>
   );
