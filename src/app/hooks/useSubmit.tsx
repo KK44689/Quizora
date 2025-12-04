@@ -15,22 +15,24 @@ export const useLoginSubmit = () => {
 
     try {
       const res = await handleLogin(data);
-      if (res.error) setError(res.error);
-
-      if (!res.error) {
-        setResponse({
-          type: 'success',
-          message: `Thanks for your submission ${res.email}, we will get back to you shortly!.`
-        });
-        
-        router.push('/dashboard');
+      if (res.error) {
+        setError(res.error);
+        setIsLoading(false);
+        return;
       }
+
+      setResponse({
+        type: 'success',
+        message: `Thanks for your submission ${res.email}, we will get back to you shortly!.`
+      });
+
+      router.push('/dashboard');
     } catch (e) {
       setResponse({
         type: 'error',
         message: 'Email or password is incorrect.'
       });
-    } finally {
+
       setIsLoading(false);
     }
   }
