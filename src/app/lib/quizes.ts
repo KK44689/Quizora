@@ -1,23 +1,29 @@
+import { headers } from "next/headers";
 import { QuizHistoryItem, QuizInfo, UserResults } from "./definition";
 
-function getBaseUrl() {
-  if (typeof window !== "undefined") {
-    // Client side
-    return window.location.origin;
-  }
+// function getBaseUrl() {
+//   if (typeof window !== "undefined") {
+//     // Client side
+//     return window.location.origin;
+//   }
 
-  // Server side
-  const host = process.env.VERCEL_URL;
-  if (host) return `https://${host}`;
+//   // Server side
+//   const host = process.env.VERCEL_URL;
+//   if (host) return `https://${host}`;
 
-  // Local dev
-  return `http://localhost:3000`;
-}
+//   // Local dev
+//   return `http://localhost:3000`;
+// }
 
-const baseUrl = getBaseUrl();
+// const baseUrl = getBaseUrl();
 
 export const fetchQuizes = async () => {
   try {
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    const baseUrl = `${protocol}://${host}`;
+
     const res = await fetch(`${baseUrl}/api/quiz`);
     const data = await res.json();
 
@@ -27,31 +33,15 @@ export const fetchQuizes = async () => {
   }
 }
 
-export const postQuizHistory = async (quizResult: QuizHistoryItem) => {
-  const quizId = quizResult.quizId;
-  const userId = quizResult.userId;
-  const answers = quizResult.answers;
-  const submittedDate = quizResult.submittedDate;
-  const score = quizResult.score;
-  const quizStatus = quizResult.quizStatus;
-
-  try {
-    const res = await fetch('/api/quiz-history', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quizId, userId, answers, submittedDate, score, quizStatus })
-    })
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 export const fetchQuizById = async (id: string) => {
   try {
-    const res = await fetch(`/api/quiz/${id}`);
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    const baseUrl = `${protocol}://${host}`;
+
+
+    const res = await fetch(`${baseUrl}/api/quiz/${id}`);
     const data = await res.json();
 
     return data;
@@ -62,10 +52,11 @@ export const fetchQuizById = async (id: string) => {
 
 export const fetchQuizByQuery = async (query: string) => {
   try {
-    // const host = (await headers()).get("host");
-    // const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
-    // const baseUrl = `${protocol}://${host}`;
+    const baseUrl = `${protocol}://${host}`;
+
 
     const quizes = await fetch(`${baseUrl}/api/quiz`);
     const result = await quizes.json();
@@ -80,7 +71,13 @@ export const fetchQuizByQuery = async (query: string) => {
 
 export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) => {
   try {
-    const quizHistoryByUser = await fetch(`/api/quiz-history/${userId}`);
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    const baseUrl = `${protocol}://${host}`;
+
+
+    const quizHistoryByUser = await fetch(`${baseUrl}/api/quiz-history/${userId}`);
     const data = await quizHistoryByUser.json();
     const quizHistoryByQuizId = data.quizHistory.filter((quiz: QuizHistoryItem) => quiz.quizId === quizId);
 
@@ -94,9 +91,15 @@ export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) =
 
 export const fetchUserQuizHistory = async (userId: string) => {
   try {
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    const baseUrl = `${protocol}://${host}`;
+
+
     const [quizHistoryRes, quizRes] = await Promise.all([
-      fetch(`/api/quiz-history/${userId}`),
-      fetch(`/api/quiz`)
+      fetch(`${baseUrl}/api/quiz-history/${userId}`),
+      fetch(`${baseUrl}/api/quiz`)
     ]);
 
     const [quizHistory, quizes] = await Promise.all([
@@ -116,6 +119,12 @@ export const fetchUserQuizHistory = async (userId: string) => {
 
 export const fetchUserQuizData = async (userId: string) => {
   try {
+    const host = (await headers()).get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+    const baseUrl = `${protocol}://${host}`;
+
+
     const quizHistory = await fetch(`${baseUrl}/api/quiz-history/${userId}`).then(res => res.json());
 
     let quizResult: UserResults = { quizPassed: 0, correctAnswers: 0 };

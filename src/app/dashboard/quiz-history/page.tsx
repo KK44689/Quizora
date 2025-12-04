@@ -3,7 +3,7 @@
 // import { useUser } from "@/app/context/userContext";
 import { fetchUserById } from "@/app/api/users/route";
 import { QuizInfo } from "@/app/lib/definition";
-import {  fetchUserQuizHistory } from "@/app/lib/quizes";
+import { fetchUserQuizHistory } from "@/app/lib/quizes";
 import { fetchCurrentUser } from "@/app/lib/users";
 import { poppins } from "@/app/ui/font";
 import Quizes from "@/app/ui/quiz/quizes";
@@ -29,7 +29,7 @@ export default async function QuizHistory() {
     <div className={`${poppins.className} flex flex-col gap-4`}>
       <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">Quiz History</h1>
       <Suspense fallback={<h1>Loading...</h1>}>
-        <Quizes quizesPromise={quizes} noDataText="No quiz history found."/>
+        <Quizes quizesPromise={quizes} noDataText="No quiz history found." />
       </Suspense>
     </div>
   );

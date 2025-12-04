@@ -8,8 +8,7 @@ import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
 import clsx from "clsx";
 import { poppins } from "../font";
 import { XMarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { use } from 'react';
-import { postQuizHistory } from "@/app/lib/quizes";
+import { useQuizSubmit } from "@/app/hooks/useSubmit";
 // import { fetchCurrentUser } from "@/app/lib/users";
 
 // Define Panel States
@@ -36,6 +35,8 @@ export function QuizPanel({
   const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
   const [answers, setAnswers] = useState<UserQuizAnswer[]>([]);
   const [panelState, setPanelState] = useState(PanelState.Quiz);
+
+  const { isLoading, response, submit } = useQuizSubmit();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -92,14 +93,15 @@ export function QuizPanel({
   }
 
   const onConfirm = async () => {
-    const response = await postQuizHistory(quizResult);
+    // const response = await postQuizHistory(quizResult);
 
-    if (!response) {
-      console.error('Failed to post quiz result');
-      router.push(pathname);
-      return;
-    }
+    // if (!response) {
+    //   console.error('Failed to post quiz result');
+    //   router.push(pathname);
+    //   return;
+    // }
 
+    submit(quizResult);
     setCurrentQuestion(questions[0]);
     setPanelState(PanelState.ConfirmReview);
   }
@@ -136,7 +138,7 @@ export function QuizPanel({
       }
 
       {panelState === PanelState.Confirm &&
-        <QuizConfirmPanel onConfirm={onConfirm} onClose={() => setPanelState(PanelState.Quiz)} />
+        <QuizConfirmPanel isLoading={isLoading} onConfirm={onConfirm} onClose={() => setPanelState(PanelState.Quiz)} />
       }
 
       {panelState === PanelState.ConfirmReview &&

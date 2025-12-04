@@ -1,9 +1,12 @@
 import QuestionMark from "@/app/assets/icons/question-mark-white.svg";
+import { Spinner } from "@heroui/react";
 
 export function QuizConfirmPanel({
+  isLoading,
   onConfirm,
   onClose
 }: {
+  isLoading: boolean,
   onConfirm: () => void,
   onClose: () => void
 }) {
@@ -11,7 +14,7 @@ export function QuizConfirmPanel({
     <>
       <div className="bg-white rounded-4xl p-10 md:w-119 max-w-2xl md:h-109 shadow-lg relative flex flex-col items-center justify-center gap-9">
         <span className="flex items-center justify-center shadow-lg relative bg-[var(--theme-blue)] rounded-full w-29 h-29 block">
-          <QuestionMark className="w-7 h-9"/>
+          <QuestionMark className="w-7 h-9" />
         </span>
         <h2 className="text-base w-60 text-center">Are you Sure you want to submit Quiz?</h2>
         <div className="flex flex-row gap-36">
@@ -26,7 +29,7 @@ export function QuizConfirmPanel({
             className="px-6 py-2 h-16 w-full md:w-24 bg-[var(--theme-blue)] text-white text-xl font-semibold rounded-lg"
             onClick={onConfirm}
           >
-            Yes
+            {isLoading ? <Spinner size="lg" className="text-white" /> : "Yes"}
           </button>
         </div>
       </div>

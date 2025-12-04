@@ -8,19 +8,20 @@ import { poppins } from "../font";
 
 export function Quiz({
   user,
-  quiz,
+  quizPromise,
   submittedDate,
   highscore,
-  onRefresh,
+  // onRefresh,
 }: {
   user: ProfileInfo
-  quiz: QuizInfo,
+  quizPromise: Promise<QuizInfo>,
   submittedDate: string | null,
   highscore: number | null,
-  onRefresh: Promise<void>,
+  // onRefresh: Promise<void>,
 }) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const quiz = use(quizPromise);
 
   return (
     <div className={`${poppins.className} flex flex-col md:flex-row gap-8`}>
@@ -46,8 +47,8 @@ export function Quiz({
             <p>Pass Points:</p>
           </div>
           <div className="flex flex-col gap-16 text-sm md:text-xl">
-            <p>{submittedDate ?? "-"}</p>
-            <p>{highscore === null ? "-" : highscore * 10}</p>
+            <p>{submittedDate ? submittedDate : "-"}</p>
+            <p>{!highscore ? "-" : highscore * 10}</p>
             <p>{quiz.passPoint * 10} </p>
           </div>
         </div>
@@ -67,7 +68,7 @@ export function Quiz({
             passPoints={quiz.passPoint}
             onClose={() => {
               setShowPanel(false)
-              use(onRefresh);
+              // use(onRefresh);
             }}
           />
         }

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { handleLogin } from "../lib/auth";
-import { LoginInfo } from "../lib/definition";
-import { useRouter } from "next/navigation";
+import { handleLogin } from "../lib/auth-action";
+import { LoginInfo, QuizHistoryItem } from "../lib/definition";
+import { usePathname, useRouter } from "next/navigation";
+import { postQuizResult } from "../lib/action";
 
 export const useLoginSubmit = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +16,7 @@ export const useLoginSubmit = () => {
     try {
       const res = await handleLogin(data);
       if (res.error) setError(res.error);
-      
+
       if (!res.error) {
         setResponse({
           type: 'success',
@@ -28,6 +29,41 @@ export const useLoginSubmit = () => {
         type: 'error',
         message: 'Email or password is incorrect.'
       });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return { isLoading, response, submit };
+};
+
+export const useQuizSubmit = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState({ type: "", message: "" });
+  const [error, setError] = useState();
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const submit = async (data: QuizHistoryItem) => {
+    setIsLoading(true);
+
+    try {
+      const res = await postQuizResult(data);
+      if (res.error) setError(res.error);
+
+      if (!res.error) {
+        setResponse({
+          type: 'success',
+          message: `Thanks for your submission.`
+        });
+      }
+    } catch (e) {
+      setResponse({
+        type: 'error',
+        message: 'Something went wrong.'
+      });
+      router.push(pathname);
     } finally {
       setIsLoading(false);
     }
