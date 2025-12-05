@@ -1,19 +1,20 @@
 import { headers } from "next/headers";
-import { QuizHistoryItem, QuizInfo, UserResults } from "./definition";
+import { QuizCollection, QuizHistoryItem, QuizInfo, UserResults } from "./definition";
 
-export const fetchQuizes = async () => {
+export const fetchQuizes = async (page: number) => {
   try {
     const host = (await headers()).get("host");
     const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     const baseUrl = `${protocol}://${host}`;
 
-    const res = await fetch(`${baseUrl}/api/quiz`);
+    const res = await fetch(`${baseUrl}/api/quiz?page=${page}`);
     const data = await res.json();
 
     return data;
   } catch (err) {
     console.error(err);
+    return [];
   }
 }
 
@@ -69,17 +70,16 @@ export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) =
   }
 }
 
-export const fetchUserQuizHistory = async (userId: string) => {
+export const fetchUserQuizHistory = async (userId: string, page: number) => {
   try {
     const host = (await headers()).get("host");
     const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
     const baseUrl = `${protocol}://${host}`;
 
-
     const [quizHistoryRes, quizRes] = await Promise.all([
       fetch(`${baseUrl}/api/quiz-history/${userId}`),
-      fetch(`${baseUrl}/api/quiz`)
+      fetch(`${baseUrl}/api/quiz?page=${page}`)
     ]);
 
     const [quizHistory, quizes] = await Promise.all([
@@ -88,12 +88,15 @@ export const fetchUserQuizHistory = async (userId: string) => {
     ])
 
     const quizHistoryId = quizHistory.quizHistory.map((history: QuizHistoryItem) => history.quizId);
-    const filteredQuiz: QuizInfo[] = quizes.filter((quiz: QuizInfo) => quizHistoryId.includes(quiz._id));
+    const filteredQuiz = quizes.quizes.filter((quiz: QuizInfo) => quizHistoryId.includes(quiz._id));
+    const ITEMS_PER_PAGE = Number(process.env.ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filteredQuiz.length / ITEMS_PER_PAGE);
+    const filteredQuizData: QuizCollection = { quizes: filteredQuiz, totalPages: totalPages };
 
-    return filteredQuiz;
+    return filteredQuizData;
   } catch (err) {
     console.error(err);
-    return [];
+    return { quizes: [], totalPages: 0 };
   }
 }
 

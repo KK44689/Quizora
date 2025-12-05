@@ -1,13 +1,15 @@
-import { QuizInfo } from "@/app/lib/definition";
+import { QuizCollection, QuizInfo } from "@/app/lib/definition";
 import { poppins } from "../font";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
+import Pagination from "../pagination";
 
-export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: Promise<QuizInfo[]>, noDataText: string }) {
-  const quizes = use(quizesPromise);
-
-  if (quizes.length === 0) return <h1>{noDataText}</h1>
+export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: Promise<QuizCollection>, noDataText: string }) {
+  const quizesData = use(quizesPromise);
+  const totalPages = quizesData.totalPages;
+  const quizes = quizesData.quizes;
+  if (!quizes || quizes.length === 0) return <h1>{noDataText}</h1>
 
   return (
     <div className={`flex flex-col gap-6`}>
@@ -22,7 +24,8 @@ export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: P
           })
         }
       </div>
-      <div className="mt-5 flex w-full justify-center">
+      <div className="mt-5 flex w-full justify-end">
+        <Pagination totalPages={totalPages} />
       </div>
     </div>
   );

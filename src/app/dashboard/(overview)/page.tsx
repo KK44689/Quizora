@@ -6,8 +6,10 @@ import ProfileSkeleton from "@/app/ui/skeleton/profile-skeleton";
 import { QuizesSkeleton } from "@/app/ui/skeleton/quizes-skeleton";
 import { Suspense } from "react";
 
-export default async function Page() {
-  const quizes = fetchQuizes();
+export default async function Page({ searchParams }: { searchParams: { query?: string, page?: number } }) {
+  const params = await searchParams;
+  const currentPage = params.page || 1;
+  const quizes = fetchQuizes(currentPage);
 
   return (
     <div>

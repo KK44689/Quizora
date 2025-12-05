@@ -5,9 +5,12 @@ import Quizes from "@/app/ui/quiz/quizes";
 import { QuizesSkeleton } from "@/app/ui/skeleton/quizes-skeleton";
 import { Suspense } from "react";
 
-export default async function QuizHistory() {
+export default async function QuizHistory({ searchParams }: { searchParams: { query?: string, page?: number } }) {
+  const params = await searchParams;
+  const currentPage = params.page || 1;
+
   const user = await fetchCurrentUser();
-  const quizes = fetchUserQuizHistory(user._id);
+  const quizes = fetchUserQuizHistory(user._id, currentPage);
 
   return (
     <div className={`${poppins.className} flex flex-col gap-4`}>

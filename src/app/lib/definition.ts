@@ -57,6 +57,11 @@ export interface QuizInfo {
   questions: Question[];
 }
 
+export interface QuizCollection {
+  quizes: QuizInfo[];
+  totalPages: number;
+}
+
 export interface QuizGameplayInfo {
   currentQuestionId: number;
   quizLength: number;
