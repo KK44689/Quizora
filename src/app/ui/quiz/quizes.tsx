@@ -37,7 +37,7 @@ export function QuizCard({ info }: { info: QuizInfo }) {
           alt={info.description}
           width={508}
           height={346}
-          className={`w-full h-80 rounded-lg object-cover`}
+          className={`w-full h-64 md:h-80 rounded-lg object-cover`}
         />
 
         <p className="absolute md:-translate-y-1/2 backdrop-blur p-6 rounded-lg text-sm md:text-base m-4 md:m-0">{info.name}</p>
