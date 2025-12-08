@@ -49,7 +49,7 @@ export function Login() {
       <div className="flex flex-col gap-8 items-center justify-center md:w-1/2 md:h-screen relative">
         <Image
           src="/quizora-blue.png"
-          alt="quizola logo"
+          alt="Quizora logo"
           width={435}
           height={89}
           className="w-48 h-auto md:w-36 md:absolute md:top-18 md:left-29"
