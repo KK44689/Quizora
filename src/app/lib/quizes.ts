@@ -43,11 +43,15 @@ export const fetchQuizByQuery = async (query: string) => {
     const quizes = await fetch(`${baseUrl}/api/quiz`);
     const result = await quizes.json();
 
-    const filteredResult: QuizInfo[] = result.filter((quiz: QuizInfo) => quiz.name.toLowerCase().includes(query) || quiz.description.toLowerCase().includes(query));
-    return filteredResult;
+    const filteredResult: QuizInfo[] = result.quizes.filter((quiz: QuizInfo) => quiz.name.toLowerCase().includes(query) || quiz.description.toLowerCase().includes(query));
+
+    const ITEMS_PER_PAGE = Number(process.env.ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filteredResult.length / ITEMS_PER_PAGE);
+    const filteredQuiz: QuizCollection = { quizes: filteredResult, totalPages: totalPages };
+    return filteredQuiz;
   } catch (err) {
     console.error(err);
-    return [];
+    return { quizes: [], totalPages: 0 };
   }
 }
 

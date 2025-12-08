@@ -1,6 +1,7 @@
 import { fetchQuizByQuery } from "@/app/lib/quizes";
 import { poppins } from "@/app/ui/font";
 import Quizes from "@/app/ui/quiz/quizes";
+import { QuizesSkeleton } from "@/app/ui/skeleton/quizes-skeleton";
 import { Suspense } from "react";
 
 export default async function Page(props: {
@@ -18,7 +19,7 @@ export default async function Page(props: {
   return (
     <div className={`${poppins.className} flex flex-col gap-4`}>
       <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">Search Result of <span className="font-medium text-[var(--theme-grey)]">"{query}"</span></h1>
-      <Suspense fallback={<h1>Loading...</h1>}>
+      <Suspense fallback={<QuizesSkeleton />}>
         <Quizes quizesPromise={quizes} noDataText={`No result for "${query}"`} />
       </Suspense>
     </div>
