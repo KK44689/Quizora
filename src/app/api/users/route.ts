@@ -1,10 +1,8 @@
-import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../lib/db";
 import { ProfileInfo } from "../../lib/definition";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   try {
     const db = await connectToDatabase();
     const collection = db.collection<ProfileInfo>(`${process.env.USER_COLLECTION_NAME}`);

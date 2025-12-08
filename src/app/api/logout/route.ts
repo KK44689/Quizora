@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redirect } from "next/navigation";
 
 export async function POST(req: NextRequest) {
   const response = NextResponse.json({ message: 'Logged out' });
