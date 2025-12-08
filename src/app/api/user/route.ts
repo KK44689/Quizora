@@ -3,10 +3,7 @@ import { verifyJwt } from '@/app/lib/jwt';
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest) {
   try {
     const token = req.cookies.get('session')?.value;
     const payload = token ? await verifyJwt(token) : null;

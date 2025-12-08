@@ -24,7 +24,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   }
 
   return (
-    <div className={`${poppins.className} flex flex-row gap-8 items-center justify-end`}>
+    <div className={`${poppins.className} flex flex-row gap-8 items-center justify-center md:justify-end`}>
       <PaginationArrow
         href={createPageURL(currentPage - 1)}
         direction={ArrowDirection.Left}
