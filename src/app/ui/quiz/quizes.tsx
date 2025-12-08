@@ -24,7 +24,7 @@ export default function Quizes({ quizesPromise, noDataText }: { quizesPromise: P
           })
         }
       </div>
-      <div className="mt-5 flex w-full justify-end">
+      <div className="mt-5 flex w-full justify-center md:justify-end">
         <Pagination totalPages={totalPages} />
       </div>
     </div>
