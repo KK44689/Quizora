@@ -9,16 +9,18 @@ import { isoToDateFormat } from "@/app/lib/utils";
 import { useRouter } from "next/navigation";
 
 export function Quiz({
-  user,
+  userPromise,
   quizPromise,
   quizHistoryPromise
 }: {
-  user: ProfileInfo
+  userPromise: Promise<ProfileInfo>
   quizPromise: Promise<QuizInfo>,
   quizHistoryPromise: Promise<QuizHistoryItem[]>,
 }) {
   const [showPanel, setShowPanel] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const user = use(userPromise);
   const quiz = use(quizPromise);
   const quizHistory = use(quizHistoryPromise);
 
