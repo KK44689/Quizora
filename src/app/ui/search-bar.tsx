@@ -42,6 +42,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
         onChange={(e) => {
           setSearchValue(e.target.value);
         }}
+        onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(searchValue) }}
         defaultValue={searchParams.get('query')?.toString()}
       />
     </div>
