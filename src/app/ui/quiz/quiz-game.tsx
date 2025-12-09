@@ -69,7 +69,7 @@ export function Quiz({
           </div>
         </div>
         <button
-          className={`w-full h-16 md:w-52 rounded-xl bg-[var(--theme-blue)] text-white`}
+          className={`w-full h-16 md:w-52 rounded-xl bg-[var(--theme-blue)] text-white hover:bg-white hover:text-[var(--theme-blue)] hover:border hover:border-[var(--theme-blue)]`}
           onClick={() => {
             setShowPanel(true);
             setQuestions(quiz.questions);

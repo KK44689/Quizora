@@ -23,14 +23,16 @@ export function QuizConfirmReviewPanel({
       <p className="text-base">You scored {score * 10}%</p>
       <div className="flex flex-row gap-8">
         <button
-          className="px-8 py-5 text-[var(--theme-blue)] text-base md:text-xl font-semibold rounded-lg border border-s border-[var(--theme-blue)]"
+          className="px-8 py-5 text-[var(--theme-blue)] text-base md:text-xl font-semibold rounded-lg border border-s border-[var(--theme-blue)]
+          hover:bg-[var(--theme-blue)] hover:text-white"
           onClick={onReview}
         >
           Review Quiz
         </button>
 
         <button
-          className="px-8 py-5 bg-[var(--theme-blue)] text-white text-base md:text-xl font-semibold rounded-lg"
+          className="px-8 py-5 bg-[var(--theme-blue)] text-white text-base md:text-xl font-semibold rounded-lg border border-[var(--theme-blue)]
+          hover:bg-white hover:text-[var(--theme-blue)] hover:border hover:border-[var(--theme-blue)]"
           onClick={onBack}
         >
           Go Home

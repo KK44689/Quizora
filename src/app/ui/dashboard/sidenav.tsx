@@ -33,12 +33,12 @@ export default function SideNav() {
       <div className="flex flex-col grow items-center md:items-stretch justify-between md:space-x-0 md:space-y-2">
         <NavLinks />
         <div className="hidden h-auto w-full grow rounded-md md:block"></div>
-        <form className="mt-auto flex justify-center md:justify-start">
+        <form className="mt-auto flex justify-center md:justify-start hover:bg-sky-100">
           <button
             onClick={handleLogout}
             className={`${poppins.className} font-bold flex w-[48px] h-[48px] md:w-full grow items-center justify-center gap-2 rounded-md p-1 md:p-3 text-sm text-[var(--theme-grey)] font-medium md:flex-none md:justify-start`}>
             <LogoutIcon className="w-8 h-8 md:h-6 text-[var(--theme-blue)]" />
-            <div className={`${poppins.className} font-semibold text-[var(--theme-grey)] hidden md:block`}>Log Out</div>
+            <div className={`${poppins.className} font-semibold text-[var(--theme-grey)] hidden md:block hover:text-blue-600`}>Log Out</div>
           </button>
         </form>
       </div>

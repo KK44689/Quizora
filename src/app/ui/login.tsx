@@ -96,7 +96,9 @@ export function Login() {
             <button
               disabled={isLoading ? true : false}
               type="submit"
-              className="w-full flex items-center justify-center bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4 disabled:bg-[var(--theme-grey)]"
+              className="w-full flex items-center justify-center bg-[var(--theme-blue)] text-white text-lg h-16 rounded-lg p-4 
+              disabled:bg-[var(--theme-grey)] 
+              hover:bg-white hover:text-[var(--theme-blue)] hover:border hover:border-[var(--theme-blue)]"
             >
               {isLoading ? <Spinner size="lg" className="text-white" /> : "Login"}
             </button>
