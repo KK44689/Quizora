@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import { useLoginSubmit } from "../hooks/useSubmit";
 import Image from "next/image";
 import { Spinner } from '@heroui/react';
+import WhiteLogo from '@/app/assets/icons/quizora-white.svg';
+import BlueLogo from '@/app/assets/icons/quizora-blue.svg';
 
 export function Login() {
   const { isLoading, response, submit } = useLoginSubmit();
@@ -30,8 +32,7 @@ export function Login() {
   return (
     <>
       <div className="md:flex md:flex-col gap-8 items-center justify-center relative h-screen md:w-1/2 mb-12 md:mb-0">
-        <Image
-          src='/quizora-white.png'
+        <WhiteLogo
           alt={"Quizora Logo"}
           width={435}
           height={89}
@@ -47,8 +48,7 @@ export function Login() {
       </div>
 
       <div className="flex flex-col gap-8 items-center justify-center md:w-1/2 md:h-screen relative">
-        <Image
-          src="/quizora-blue.png"
+        <BlueLogo
           alt="Quizora logo"
           width={435}
           height={89}
