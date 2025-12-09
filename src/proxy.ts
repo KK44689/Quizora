@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose';
 export async function proxy(request: NextRequest) {
   const token = request.cookies.get('session')?.value;
 
-  const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
+  const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login') && request.nextUrl.pathname !== '/';
 
   if (isProtectedRoute) {
     if (!token) {
@@ -33,11 +33,9 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // 7. Allow the request to continue
   return NextResponse.next();
 }
 
-// 8. Configure the scope of the middleware (match all pages except API routes and static resources)
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png|.*\\.svg|.*\\.jpg).*)',]
 };

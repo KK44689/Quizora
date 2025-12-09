@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Metadata } from "next";
-import { nunito_sans } from "./ui/font";
+import { nunito_sans, poppins } from "./ui/font";
 import Link from "next/link";
+import WhiteLogo from '@/app/assets/icons/quizora-white.svg';
 
 export const metadata: Metadata = {
   title: "Quizora",
@@ -9,29 +9,22 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="flex flex-col md:flex-row h-screen font-sans">
-      <div className="flex flex-col items-center justify-center w-full bg-[var(--theme-blue)] gap-8 md:w-1/2 h-1/2 md:h-full ">
-        <Image
-          src='/quizora-white.png'
-          alt={"Quizora Logo"}
-          width={435}
-          height={89}
-          className="w-32 sm:w-48 md:w-64 lg:w-80 h-auto"
-        />
+    <div className={`${poppins.className} overflow-hidden flex flex-col gap-8 items-center justify-center relative h-screen w-full`}>
+      <div className="absolute inset-0 bg-cover bg-center bg-[url('/landing-bg.png')] blur-sm scale-105"></div>
+      <div className="absolute inset-0 bg-[var(--theme-blue)]/50 scale-y-110 md:scale-100"></div>
 
-        <h1 className={`${nunito_sans} text-base text-white font-bold text-center md:text-xl md:text-3xl md:leading-normal`}>The ultimate quiz game for curious minds.</h1>
-      </div>
+      <WhiteLogo
+        alt={"Quizora Logo"}
+        width={435}
+        height={89}
+        className="w-32 md:w-120 h-auto z-10"
+      />
 
-      <div className="flex flex-col h-1/2  w-full items-center justify-center gap-8 bg-white md:h-full md:w-1/2">
-        <p className={`${nunito_sans} text-base text-[var(--theme-blue)] text-center md:text-3xl md:leading-normal`}>
-          <b>Used this info to try it yourself!</b><br /><br />
-          <b>Email:</b> lunaDuck@gmail.com<br />
-          <b>Password:</b> lunaDuck123456<br />
-        </p>
-        <Link href="/login">
-          <button className="text-white bg-[var(--theme-blue)] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Login</button>
-        </Link>
-      </div>
+      <h1 className={`${nunito_sans} text-base text-white font-semibold text-center z-10 md:text-3xl md:leading-normal`}>Log in and ignite your quiz journey! <br /><br />Track your progress, beat your best scores, <br />and push your skills to the next level. <br /><br />Start your adventure now!</h1>
+
+      <Link href="/login" className="z-10">
+        <button className="text-[var(--theme-blue)] border border-[var(--theme-blue)] w-full md:w-90 md:h-26 text-base font-semibold md:text-3xl bg-white hover:bg-[var(--theme-blue)] hover:text-white font-lg rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Login</button>
+      </Link>
     </div>
   );
 }
