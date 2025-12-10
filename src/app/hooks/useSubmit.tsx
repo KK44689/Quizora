@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { handleLogin } from "../lib/auth-action";
+import { handleLogin, logoutHandler } from "../lib/auth-action";
 import { LoginInfo, QuizHistoryItem } from "../lib/definition";
 import { usePathname, useRouter } from "next/navigation";
 import { postQuizResult } from "../lib/action";
@@ -38,6 +38,42 @@ export const useLoginSubmit = () => {
   }
 
   return { isLoading, response, submit };
+};
+
+export const useLogout = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState({ type: "", message: "" });
+  const [error, setError] = useState();
+  const router = useRouter();
+
+  const logout = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await logoutHandler();
+      if (res.error) {
+        setError(res.error);
+        setIsLoading(false);
+        return;
+      }
+
+      setResponse({
+        type: 'success',
+        message: `Thanks for your submission ${res.email}, we will get back to you shortly!.`
+      });
+
+      router.push('/');
+    } catch (e) {
+      setResponse({
+        type: 'error',
+        message: 'Email or password is incorrect.'
+      });
+
+      setIsLoading(false);
+    }
+  }
+
+  return { isLoading, response, logout };
 };
 
 export const useQuizSubmit = () => {
