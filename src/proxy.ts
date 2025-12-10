@@ -5,7 +5,11 @@ import { jwtVerify } from 'jose';
 export async function proxy(request: NextRequest) {
   const token = request.cookies.get('session')?.value;
 
-  const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login') && request.nextUrl.pathname !== '/';
+  const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
+
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.next();
+  }
 
   if (isProtectedRoute) {
     if (!token) {
@@ -22,7 +26,7 @@ export async function proxy(request: NextRequest) {
     }
   } else {
     if (!token) {
-      return NextResponse.next();
+      return;
     }
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
