@@ -59,7 +59,7 @@ export function Login() {
           <h2 className={`text-[var(--theme-blue)] text-lg`}>with your registered Email Address</h2><br /><br />
           <form onSubmit={formik.handleSubmit} className="flex flex-col items-center pb-8 md:pb-0 gap-5">
             <div className="flex flex-col gap-3 w-76 md:w-full">
-              <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Email address*</label>
+              <label htmlFor="email" className={`text-[var(--theme-grey)] text-base font-semibold`}>Email address*</label>
               <input
                 id="email"
                 type="email"
@@ -72,7 +72,7 @@ export function Login() {
             </div>
 
             <div className="flex flex-col gap-3 w-76 md:w-106">
-              <label className={`text-[var(--theme-grey)] text-base font-semibold`}>Enter password*</label>
+              <label htmlFor="password" className={`text-[var(--theme-grey)] text-base font-semibold`}>Enter password*</label>
               <span className="relative">
                 <input
                   id="password"
