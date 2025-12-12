@@ -5,11 +5,9 @@ import NavLinks from "./nav-links";
 import Link from "next/link";
 import LogoutIcon from "@/app/assets/icons/ri_logout-box-fill.svg";
 import { poppins } from "../font";
-import { useRouter } from "next/navigation";
 import { useLogout } from "@/app/hooks/useSubmit";
 
-export default function SideNav() {
-  const router = useRouter();
+export function SideNav() {
   const { isLoading, logout } = useLogout();
 
   async function handleLogout(event: React.MouseEvent<HTMLElement>): Promise<void> {

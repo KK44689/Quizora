@@ -52,14 +52,14 @@ describe("Login Component", () => {
   });
 
   // test login form actions
-  it("test error message when submitting an empty form", async () => {
+  it("show error message when submitting an empty form", async () => {
     render(<Login />);
     fireEvent.click(screen.getByRole("button", { name: /login/i }));
     expect(await screen.findByText("Email is required.")).toBeInTheDocument();
     expect(await screen.findByText("Password is required.")).toBeInTheDocument();
   });
 
-  it("test validation of the incorrect email format", async () => {
+  it("show error message when submitting incorrect email format", async () => {
     render(<Login />);
 
     const emailInput = screen.getByLabelText(/email/i);
@@ -72,7 +72,7 @@ describe("Login Component", () => {
     expect(await screen.getByText("Please enter a valid email address.")).toBeInTheDocument();
   });
 
-  it("test invalid password length", async () => {
+  it("show error message for invalid password length", async () => {
     render(<Login />);
 
     const passwordInput = screen.getByLabelText(/password/i);
@@ -85,7 +85,7 @@ describe("Login Component", () => {
     expect(await screen.getByText("Must be at least 6 characters")).toBeInTheDocument();
   });
 
-  it("test toggles password visibility", () => {
+  it("toggles password visibility", () => {
     render(<Login />);
 
     const toggleButton = screen.getByRole("button", { name: /show/i });
@@ -99,7 +99,7 @@ describe("Login Component", () => {
     expect(screen.getByRole("button", { name: /hide/i })).toBeInTheDocument();
   });
 
-  it("test incorrect credentials", async () => {
+  it("show error message when submitting incorrect credentials", async () => {
     (useLoginSubmit as jest.Mock).mockReturnValue({
       isLoading: false,
       response: { type: "error", message: "Email or password is incorrect." },
@@ -111,7 +111,7 @@ describe("Login Component", () => {
     expect(screen.getByText((text) => text.includes("Email or password is incorrect."))).toBeInTheDocument();
   });
 
-  it("test correct credentials", async () => {
+  it("submitting correct credentials", async () => {
     (useLoginSubmit as jest.Mock).mockReturnValue({
       isLoading: false,
       response: { type: "", message: "" },

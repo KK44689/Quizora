@@ -25,7 +25,7 @@ describe("Landing Page", () => {
     expect(screen.getByTestId("logo")).toBeInTheDocument();
   });
 
-  it("Link to /login", () => {
+  it("link to /login", () => {
     render(<Page />);
     const link = screen.getByTestId("link");
     expect(link).toHaveAttribute("href", "/login");
