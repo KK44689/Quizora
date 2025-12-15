@@ -20,7 +20,11 @@ jest.mock('@/app/ui/quiz/quizes', () => ({
 }))
 
 jest.mock('@/app/lib/quizes', () => ({
-  fetchQuizes: jest.fn(() => Promise.resolve([])),
+  fetchQuizes: jest.fn(() => Promise.resolve({
+    firstName: "Luna",
+    lastName: "Duck",
+    image: "/avatar.png",
+  })),
 }));
 
 // Mock Avatar

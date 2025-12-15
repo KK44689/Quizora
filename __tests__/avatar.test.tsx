@@ -9,5 +9,16 @@ jest.mock('next/image', () => ({
 
 describe("Avatar", () => {
   it("renders avatar", () => {
+    const avatar = <Avatar user={{
+      _id: "test",
+      firstName: "Luna",
+      lastName: "Duck",
+      image: "/avatar.png",
+    }} />
+
+    render(avatar);
+
+    const avatarImage = screen.getByAltText((text) => text.includes("avatar"));
+    expect(avatarImage).toHaveAttribute('src', '/avatar.png');
   });
 });
