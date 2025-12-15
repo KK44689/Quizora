@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { SideNav } from "@/app/ui/dashboard/sidenav";
+import SideNav from "@/app/ui/dashboard/sidenav";
 import '@testing-library/jest-dom'
 import { useLogout } from "@/app/hooks/useSubmit";
+import NavLinks from "@/app/ui/dashboard/nav-links";
 
 //Mock next/link
 jest.mock("next/link", () => {
@@ -20,7 +21,7 @@ jest.mock('next/image', () => ({
   }
 }));
 
-// Mock router
+// Mock router ans usePathname
 jest.mock('next/navigation', () => ({
   __esModule: true,
   useRouter: () => ({
@@ -29,10 +30,15 @@ jest.mock('next/navigation', () => ({
   usePathname: () => "",
 }));
 
-// Mock NavLinks
-jest.mock('@/app/ui/dashboard/nav-links', () => ({
+// Mock icons
+jest.mock('@/app/assets/icons/ic_round-space-dashboard.svg', () => ({
   __esModule: true,
-  default: () => <div data-testid='navlinks'>NavLinks</div>
+  default: (props: any) => <div data-testid='dashboard-icon' {...props}>Dashboard Icon</div>
+}));
+
+jest.mock('@/app/assets/icons/ic_twotone-history.svg', () => ({
+  __esModule: true,
+  default: (props: any) => <div data-testid='history-icon' {...props}>History Icon</div>
 }));
 
 // Mock logout icon
@@ -61,17 +67,15 @@ describe("Side Navigation Component", () => {
 
   it('renders link to / from logo', () => {
     render(<SideNav />);
-    const link = screen.getByTestId('link');
-    expect(link).toHaveAttribute('href', '/');
+    const links = screen.getAllByTestId('link');
+    const link = links.find(link => link.getAttribute('href') === '/');
+    const hrefs = links.map(link => link.getAttribute('href'));
+
+    expect(hrefs).toContain('/');
+
     expect(link).toContainElement(
       screen.getByTestId("logo-image")
     );
-  });
-
-  it('renders navlinks', () => {
-    render(<SideNav />);
-    const navlinks = screen.getByTestId('navlinks');
-    expect(navlinks).toBeInTheDocument();
   });
 
   it('render logout button', () => {
@@ -97,5 +101,14 @@ describe("Side Navigation Component", () => {
     await waitFor(() => {
       expect(mockLogout).toHaveBeenCalled();
     });
+  });
+
+  it("link to each urls", () => {
+    render(<NavLinks />);
+    const links = screen.getAllByTestId('link');
+    const hrefs = links.map(link => link.getAttribute('href'));
+
+    expect(hrefs).toContain('/dashboard');
+    expect(hrefs).toContain('/dashboard/quiz-history');
   });
 });

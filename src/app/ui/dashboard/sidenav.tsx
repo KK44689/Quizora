@@ -7,7 +7,7 @@ import LogoutIcon from "@/app/assets/icons/ri_logout-box-fill.svg";
 import { poppins } from "../font";
 import { useLogout } from "@/app/hooks/useSubmit";
 
-export function SideNav() {
+export default function SideNav() {
   const { isLoading, logout } = useLogout();
 
   async function handleLogout(event: React.MouseEvent<HTMLElement>): Promise<void> {

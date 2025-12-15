@@ -28,7 +28,3 @@ export default async function Page({ searchParams }: { searchParams: { query?: s
     </div>
   );
 }
-
-function Loading() {
-  return <h1>Loading...</h1>;
-}
