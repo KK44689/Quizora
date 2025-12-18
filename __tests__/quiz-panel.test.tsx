@@ -90,7 +90,21 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("@/app/ui/quiz/quiz-confirm-panel", () => ({
   __esModule: true,
-  QuizConfirmPanel: () => <div data-testid="quiz-confirm" />
+  QuizConfirmPanel: ({ onConfirm, onClose }: any) => (
+    <div data-testid="quiz-confirm">
+      <button onClick={onConfirm}>confirm</button>
+      <button onClick={onClose}>cancel</button>
+    </div>
+  ),
+}));
+
+jest.mock("@/app/ui/quiz/quiz-confirm-review", () => ({
+  __esModule: true,
+  QuizConfirmReviewPanel: ({ onReview }: any) => (
+    <div data-testid="quiz-confirm-review">
+      <button onClick={onReview}>review</button>
+    </div>
+  ),
 }));
 
 describe("Quiz Panel", () => {
@@ -125,13 +139,20 @@ describe("Quiz Panel", () => {
     expect(choice4).toBeInTheDocument();
   });
 
+  it("render close button", () => {
+    setup();
+
+    const closeButton = screen.getByRole("button", { name: /close/i });
+    expect(closeButton).toBeInTheDocument();
+  });
+
   it("render first question", () => {
     setup();
 
-    const backButton = screen.queryByRole("button", { name: "back button" });
-    expect(backButton).not.toBeInTheDocument();
-
+    const backButton = screen.queryByRole("button", { name: /back/i });
     const nextButton = screen.getByRole("button", { name: /next/i });
+
+    expect(backButton).not.toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
   });
 
@@ -141,7 +162,7 @@ describe("Quiz Panel", () => {
     const nextButton = screen.getByRole("button", { name: /next/i });
     fireEvent.click(nextButton);
 
-    const backButton = screen.getByRole("button", { name: "back button" });
+    const backButton = screen.getByRole("button", { name: /back/i });
 
     expect(backButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
@@ -154,7 +175,7 @@ describe("Quiz Panel", () => {
     fireEvent.click(nextButton);
     fireEvent.click(nextButton);
 
-    const backButton = screen.getByRole("button", { name: "back button" });
+    const backButton = screen.getByRole("button", { name: /back/i });
     const submitButton = screen.getByRole("button", { name: /submit/i });
 
     expect(backButton).toBeInTheDocument();
@@ -174,3 +195,17 @@ describe("Quiz Panel", () => {
     expect(confirmPanel).toBeInTheDocument();
   });
 });
+
+// describe("Quiz Flow", () => {
+//   const setup = () => {
+//     render(
+//       <QuizPanel
+//         user={userData}
+//         questions={questions}
+//         passPoints={3}
+//         onClose={jest.fn()}
+//       />);
+//   };
+
+
+// });
