@@ -35,7 +35,6 @@ export function QuizConfirmPanel({
           </button>
         </div>
       </div>
-
     </>
   );
 }

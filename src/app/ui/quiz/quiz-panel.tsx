@@ -1,6 +1,6 @@
 import { Choice, ChoiceStatus, ProfileInfo, Question, QuizHistoryItem, UserQuizAnswer } from "@/app/lib/definition";
 import { useState } from "react";
-import { QuizConfirmPanel } from "./quiz-confirm-panel";
+import { QuizConfirmPanel } from "@/app/ui/quiz/quiz-confirm-panel";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { QuizConfirmReviewPanel } from "./quiz-confirm-review";
 import clsx from "clsx";
@@ -175,6 +175,7 @@ function QuestionDetails({
           className="flex items-center justify-center absolute top-4 right-4 md:-top-4 md:-right-4 bg-[#FBF9F9] w-10 h-10 rounded-full border border-[var(--theme-grey)]
           hover:scale-110 transition-transform duration-200 hover:bg-[var(--theme-blue)] hover:text-white"
           onClick={onClose}
+          aria-label="close button"
         >
           <XMarkIcon className="w-8 h-8 md:w-4 md:h-4" />
         </button>
@@ -186,6 +187,7 @@ function QuestionDetails({
               className="flex items-center absolute top-4 left-4 md:top-8 md:left-10 justify-center bg-[#FBF9F9] w-10 h-10 rounded-full border border-[var(--theme-grey)]
               hover:scale-110 transition-transform duration-200 hover:bg-[var(--theme-blue)] hover:text-white"
               onClick={onBack}
+              aria-label="back button"
             >
               <ChevronLeftIcon className="w-8 h-8 md:w-4 md:h-4" />
             </button>

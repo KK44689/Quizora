@@ -1,7 +1,6 @@
 import { Quiz } from '@/app/ui/quiz/quiz-game';
 import '@testing-library/jest-dom';
-import { act, render, screen } from '@testing-library/react';
-import { start } from 'repl';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 // Mock Router
 jest.mock('next/navigation', () => ({
@@ -14,6 +13,13 @@ jest.mock("next/image", () => ({
   __esModule: true,
   default: (props: any) => <img {...props} />
 }));
+
+// Mock Quiz Panel
+jest.mock("@/app/ui/quiz/quiz-panel", () => ({
+  __esModule: true,
+  QuizPanel: () => <div data-testid="quiz-panel">Quiz Panel</div>
+}));
+
 
 const userData = {
   _id: "test",
@@ -166,5 +172,21 @@ describe("Quiz info", () => {
 
     const startButton = screen.getByRole("button", { name: /start/i });
     expect(startButton).toBeInTheDocument();
+  });
+
+  it("show quiz panel on start pressed", async () => {
+    await act(async () => {
+      render(<Quiz
+        userPromise={Promise.resolve(userData)}
+        quizPromise={Promise.resolve(quizData)}
+        quizHistoryPromise={Promise.resolve(quizHistoryData)}
+      />);
+    });
+
+    const startButton = screen.getByRole("button", { name: /start/i });
+    fireEvent.click(startButton);
+
+    const quizPanel = screen.getByTestId("quiz-panel");
+    expect(quizPanel).toBeInTheDocument();
   });
 });
