@@ -9,11 +9,11 @@ export const fetchQuizes = async (page: number) => {
     const baseUrl = `${protocol}://${host}`;
 
     const res = await fetch(`${baseUrl}/api/quiz?page=${page}`);
-    const text = await res.text();
-    console.log(`quizes: ${text.slice(0, 100)}`);
+    // const text = await res.text();
+    // console.log(`quizes: ${text.slice(0, 100)}`);
     console.log(`baseUrl: ${baseUrl}`);
     const data = await res.json();
-    console.log(`data: ${data}`);
+    // console.log(`data: ${data}`);
 
     return data;
   } catch (err) {

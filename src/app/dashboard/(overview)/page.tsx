@@ -9,8 +9,8 @@ import { Suspense } from "react";
 export default async function Page({ searchParams }: { searchParams: { query?: string, page?: number } }) {
   const params = await searchParams;
   const currentPage = params.page || 1;
-  const quizes = fetchQuizes(currentPage);
-  console.log(quizes);
+  // const quizes = fetchQuizes(currentPage);
+  // console.log(quizes);
 
   return (
     <div>
@@ -22,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: { query?: s
         <div className="flex flex-col gap-4">
           <h1 className={`${poppins.className} text-[var(--theme-blue)] font-bold text-base md:text-2xl`}>Featured Quizes</h1>
           <Suspense fallback={<QuizesSkeleton />}>
-            <Quizes quizesPromise={quizes} noDataText="No quiz found." />
+            <Quizes quizesPromise={fetchQuizes(currentPage)} noDataText="No quiz found." />
           </Suspense>
         </div>
       </main>
