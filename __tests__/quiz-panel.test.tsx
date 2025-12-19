@@ -1,7 +1,7 @@
 import { QuizPanel } from "@/app/ui/quiz/quiz-panel";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { QuizConfirmPanel } from "@/app/ui/quiz/quiz-confirm-panel";
+import { useQuizSubmit } from "@/app/hooks/useSubmit";
 
 const userData = {
   _id: "test",
@@ -88,6 +88,10 @@ jest.mock("next/navigation", () => ({
   useParams: () => ({ id: "quiz-test" })
 }));
 
+jest.mock("@/app/hooks/useSubmit", () => ({
+  useQuizSubmit: jest.fn()
+}));
+
 jest.mock("@/app/ui/quiz/quiz-confirm-panel", () => ({
   __esModule: true,
   QuizConfirmPanel: ({ onConfirm, onClose }: any) => (
@@ -117,6 +121,16 @@ describe("Quiz Panel", () => {
         onClose={jest.fn()}
       />);
   };
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+
+    (useQuizSubmit as jest.Mock).mockReturnValue({
+      isLoading: false,
+      response: { type: "", message: "" },
+      submit: jest.fn(),
+    });
+  });
 
   it("render question info", () => {
     setup();
@@ -182,6 +196,45 @@ describe("Quiz Panel", () => {
     expect(submitButton).toBeInTheDocument();
   });
 
+  it("click close button", () => {
+    const onClose = jest.fn();
+
+    render(
+      <QuizPanel
+        user={userData}
+        questions={questions}
+        passPoints={3}
+        onClose={onClose}
+      />);
+
+    const closeButton = screen.getByRole("button", { name: /close/i });
+    fireEvent.click(closeButton);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Quiz Flow", () => {
+  const setup = () => {
+    render(
+      <QuizPanel
+        user={userData}
+        questions={questions}
+        passPoints={3}
+        onClose={jest.fn()}
+        data-testid="quiz-panel"
+      />);
+  };
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    (useQuizSubmit as jest.Mock).mockReturnValue({
+      isLoading: false,
+      response: { type: "", message: "" },
+      submit: jest.fn(),
+    });
+  });
+
   it("show confirm panel", () => {
     setup();
     const nextButton = screen.getByRole("button", { name: /next/i });
@@ -194,18 +247,119 @@ describe("Quiz Panel", () => {
     const confirmPanel = screen.getByTestId("quiz-confirm");
     expect(confirmPanel).toBeInTheDocument();
   });
+
+  it("cancel in confirm panel", () => {
+    setup();
+    const nextButton = screen.getByRole("button", { name: /next/i });
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const confirmPanel = screen.getByTestId("quiz-confirm");
+    expect(confirmPanel).toBeInTheDocument();
+
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    fireEvent.click(cancelButton);
+
+    const quizPanel = screen.getByLabelText("quiz-panel");
+    expect(confirmPanel).not.toBeInTheDocument();
+    expect(quizPanel).toBeInTheDocument();
+  });
+
+  it("confirm in confirm panel", () => {
+    const mockSubmit = jest.fn();
+
+    (useQuizSubmit as jest.Mock).mockReturnValue({
+      isLoading: false,
+      response: { type: "success", message: "Thanks for your submission." },
+      submit: mockSubmit,
+    });
+
+    render(
+      <QuizPanel
+        user={userData}
+        questions={questions}
+        passPoints={3}
+        onClose={jest.fn()}
+        data-testid="quiz-panel"
+      />);
+
+    const nextButton = screen.getByRole("button", { name: /next/i });
+
+    const choice1 = screen.getByRole("button", { name: /halo/i });
+    fireEvent.click(choice1);
+    fireEvent.click(nextButton);
+    
+    const choice2 = screen.getByRole("button", { name: /red/i });
+    fireEvent.click(choice2);
+    fireEvent.click(nextButton);
+    
+    const choice3 = screen.getByRole("button", { name: /pubg/i });
+    fireEvent.click(choice3);
+
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const confirmPanel = screen.getByTestId("quiz-confirm");
+    expect(confirmPanel).toBeInTheDocument();
+
+    const confirmButton = screen.getByRole("button", { name: /confirm/i });
+    fireEvent.click(confirmButton);
+
+    expect(mockSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        quizId: "quiz-test",
+        userId: "test",
+        score: expect.any(Number),
+        quizStatus: expect.any(Boolean),
+        submittedDate: expect.any(String),
+        answers: expect.arrayContaining([
+          expect.objectContaining({ id: 1 }),
+          expect.objectContaining({ id: 2 }),
+          expect.objectContaining({ id: 3 }),
+        ]),
+      })
+    );
+
+    const confrimReviewPanel = screen.getByTestId("quiz-confirm-review");
+    expect(confrimReviewPanel).toBeInTheDocument();
+  });
+
+  it("go to review mode in confirm review panel", () => {
+    setup();
+
+    const mockSubmit = jest.fn();
+
+    (useQuizSubmit as jest.Mock).mockReturnValue({
+      isLoading: false,
+      response: { type: "success", message: "Thanks for your submission." },
+      submit: mockSubmit,
+    });
+
+    const nextButton = screen.getByRole("button", { name: /next/i });
+    fireEvent.click(nextButton);
+    fireEvent.click(nextButton);
+
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const confirmPanel = screen.getByTestId("quiz-confirm");
+    expect(confirmPanel).toBeInTheDocument();
+
+    const confirmButton = screen.getByRole("button", { name: /confirm/i });
+    fireEvent.click(confirmButton);
+
+    const confrimReviewPanel = screen.getByTestId("quiz-confirm-review");
+    expect(confrimReviewPanel).toBeInTheDocument();
+
+    const reviewButton = screen.getByRole("button", { name: /review/i });
+    fireEvent.click(reviewButton);
+
+    const quizPanel = screen.getByLabelText("quiz-panel");
+
+    expect(confrimReviewPanel).not.toBeInTheDocument();
+    expect(quizPanel).toBeInTheDocument();
+  });
 });
-
-// describe("Quiz Flow", () => {
-//   const setup = () => {
-//     render(
-//       <QuizPanel
-//         user={userData}
-//         questions={questions}
-//         passPoints={3}
-//         onClose={jest.fn()}
-//       />);
-//   };
-
-
-// });
