@@ -7,7 +7,7 @@ export async function proxy(request: NextRequest) {
 
   const isProtectedRoute = !request.nextUrl.pathname.startsWith('/login');
 
-  if (request.nextUrl.pathname === '/') {
+  if (request.nextUrl.pathname.startsWith("/api") || request.nextUrl.pathname === '/') {
     return NextResponse.next();
   }
 
@@ -26,7 +26,7 @@ export async function proxy(request: NextRequest) {
     }
   } else {
     if (!token) {
-      return;
+      return NextResponse.next();
     }
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
