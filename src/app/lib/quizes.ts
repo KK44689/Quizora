@@ -10,8 +10,10 @@ export const fetchQuizes = async (page: number) => {
 
     const res = await fetch(`${baseUrl}/api/quiz?page=${page}`);
     const text = await res.text();
-    console.log(text.slice(0, 100));
+    console.log(`quizes: ${text.slice(0, 100)}`);
+    console.log(`baseUrl: ${baseUrl}`);
     const data = await res.json();
+    console.log(`data: ${data}`);
 
     return data;
   } catch (err) {
