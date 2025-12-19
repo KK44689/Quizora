@@ -10,6 +10,7 @@ export default async function Page({ searchParams }: { searchParams: { query?: s
   const params = await searchParams;
   const currentPage = params.page || 1;
   const quizes = fetchQuizes(currentPage);
+  console.log(quizes);
 
   return (
     <div>
