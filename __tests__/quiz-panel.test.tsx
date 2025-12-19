@@ -361,5 +361,6 @@ describe("Quiz Flow", () => {
 
     expect(confrimReviewPanel).not.toBeInTheDocument();
     expect(quizPanel).toBeInTheDocument();
+    console.log("test");
   });
 });
