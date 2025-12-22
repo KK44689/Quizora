@@ -9,6 +9,12 @@ export const fetchQuizes = async (page: number) => {
     const baseUrl = `${protocol}://${host}`;
 
     const res = await fetch(`${baseUrl}/api/quiz?page=${page}`);
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Request failed: ${text}`);
+    }
+    console.log(`baseUrl: ${baseUrl}`);
     const data = await res.json();
 
     return data;
@@ -25,6 +31,12 @@ export const fetchQuizById = async (id: string) => {
 
     const baseUrl = `${protocol}://${host}`;
     const res = await fetch(`${baseUrl}/api/quiz/${id}`);
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Request failed: ${text}`);
+    }
+
     const data = await res.json();
 
     return data;
@@ -41,6 +53,12 @@ export const fetchQuizByQuery = async (query: string) => {
     const baseUrl = `${protocol}://${host}`;
 
     const quizes = await fetch(`${baseUrl}/api/quiz`);
+
+    if (!quizes.ok) {
+      const text = await quizes.text();
+      throw new Error(`Request failed: ${text}`);
+    }
+
     const result = await quizes.json();
 
     const filteredResult: QuizInfo[] = result.quizes.filter((quiz: QuizInfo) => quiz.name.toLowerCase().includes(query) || quiz.description.toLowerCase().includes(query));
@@ -63,6 +81,12 @@ export const fetchQuizHistoryByQuizId = async (userId: string, quizId: string) =
     const baseUrl = `${protocol}://${host}`;
 
     const quizHistoryByUser = await fetch(`${baseUrl}/api/quiz-history/${userId}`);
+
+    if (!quizHistoryByUser.ok) {
+      const text = await quizHistoryByUser.text();
+      throw new Error(`Request failed: ${text}`);
+    }
+
     const data = await quizHistoryByUser.json();
     const quizHistoryByQuizId = data.quizHistory.filter((quiz: QuizHistoryItem) => quiz.quizId === quizId);
 
@@ -85,6 +109,12 @@ export const fetchUserQuizHistory = async (userId: string, page: number) => {
       fetch(`${baseUrl}/api/quiz-history/${userId}`),
       fetch(`${baseUrl}/api/quiz?page=${page}`)
     ]);
+
+    if (!quizHistoryRes.ok || !quizRes.ok) {
+      const quizHistoryText = await quizHistoryRes.text();
+      const quizText = await quizRes.text();
+      throw new Error(`Request failed: QuizHistory: ${quizHistoryText} \n Quiz: ${quizText}`);
+    }
 
     const [quizHistory, quizes] = await Promise.all([
       quizHistoryRes.json(),
@@ -111,11 +141,17 @@ export const fetchUserQuizData = async (userId: string) => {
 
     const baseUrl = `${protocol}://${host}`;
 
-    const quizHistory = await fetch(`${baseUrl}/api/quiz-history/${userId}`).then(res => res.json());
+    const quizHistory = await fetch(`${baseUrl}/api/quiz-history/${userId}`);
 
+    if (!quizHistory.ok) {
+      const text = await quizHistory.text();
+      throw new Error(`Request failed: ${text}`);
+    }
+
+    const data = await quizHistory.json();
     let quizResult: UserResults = { quizPassed: 0, correctAnswers: 0 };
 
-    quizHistory.quizHistory.forEach((history: QuizHistoryItem) => {
+    data.quizHistory.forEach((history: QuizHistoryItem) => {
       if (history.quizStatus) quizResult.quizPassed += 1;
       quizResult.correctAnswers += history.score;
     });
