@@ -41,9 +41,9 @@ export function Quiz({
 
   return (
     <div className={`${poppins.className} flex flex-col md:flex-row gap-8`}>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 w-full md:w-2/3">
         <h1 className="text-[var(--theme-blue)] font-bold text-base md:text-2xl">{quiz.name}</h1>
-        <div className="flex flex-col gap-8 md:ml-40">
+        <div className="flex flex-col gap-8 md:ml-30">
           <Image
             src={quiz.image ?? null}
             width={903}
@@ -55,7 +55,7 @@ export function Quiz({
         </div>
       </div>
 
-      <div className="flex flex-col gap-12 text-left md:w-full md:items-center md:justify-center">
+      <div className="flex flex-col gap-12 text-left w-full md:w-1/3 md:items-center md:justify-center">
         <div className="flex gap-8 text-left text-[var(--theme-grey)]">
           <div className="flex flex-col gap-16 font-bold text-sm md:text-xl">
             <p>Submitted Date:</p>
