@@ -18,7 +18,7 @@ export default function SideNav() {
 
   return (
     <div className='fixed flex flex-col h-screen w-16 p-2 pt-6 md:p-8 gap-16 md:w-64'>
-      <Link href={"/"} className="flex items-center justify-center">
+      <Link href={"/dashboard"} className="flex items-center justify-center">
         <Image
           src="/quizora-blue.png"
           alt="quizola logo"
